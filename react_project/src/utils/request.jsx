@@ -7,7 +7,7 @@ import router from "../router"
 // 3. 请求拦截器 / 响应拦截器
 
 const request = axios.create({
-  baseURL: 'http://geek.itheima.net/v1_0',
+  baseURL: 'http://localhost:3000/api',
   timeout: 5000
 })
 
