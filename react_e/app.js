@@ -3,11 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+let {expressjwt} = require("express-jwt") // 得到中间件
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var articlesRouter = require('./routes/articles')
 
 var app = express();
+
+
+const cors = require("cors");
+app.use(cors()); //使用cors中间件
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,8 +25,31 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 在路由之前解析jwt
+app.use(expressjwt({
+  secret:'testkey',
+  algorithms:["HS256"]
+}).unless({
+  path:["/api/users",/^\/api\/articles\/users\/\w+/,{
+    url:/^\/api\/articles\/\w+/,
+    methods:['GET']
+  }],//这些路由不会被校验
+})
+)
+// app.use(expressjwt({
+//   secret:'testkey',
+//   algorithms:["HS256"]
+// }).unless({
+//   path:["/api/users",/^\/api\/articles\/users\/\w+/,{
+//     url:/^\/api\/articles\/\w+/,
+//     methods:['GET']
+//   }],//这些路由不会被校验
+// })
+// )
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/articles', articlesRouter);
+app.use('/api/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
