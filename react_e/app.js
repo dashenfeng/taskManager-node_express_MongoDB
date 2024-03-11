@@ -36,16 +36,6 @@ app.use(expressjwt({
   }],//这些路由不会被校验
 })
 )
-// app.use(expressjwt({
-//   secret:'testkey',
-//   algorithms:["HS256"]
-// }).unless({
-//   path:["/api/users",/^\/api\/articles\/users\/\w+/,{
-//     url:/^\/api\/articles\/\w+/,
-//     methods:['GET']
-//   }],//这些路由不会被校验
-// })
-// )
 
 app.use('/', indexRouter);
 app.use('/api/articles', articlesRouter);
