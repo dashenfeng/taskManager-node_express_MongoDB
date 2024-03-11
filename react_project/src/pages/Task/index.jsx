@@ -10,39 +10,66 @@ import {
   Table,
   Space,
   Popconfirm,
-  Tag
+  Tag,
 } from "antd";
 // 引入汉化包 时间选择器显示中文
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useChannel } from "../../hooks/useChannel";
+import { deleteTask, findInfo } from "../../apis/task";
+import { useEffect, useState } from "react";
 
 const Task = () => {
   const { channelList } = useChannel();
   const { RangePicker } = DatePicker;
-  const { Option } = Select
-    // 定义状态枚举
-    const status = {
-      1: <Tag color="warning">待审核</Tag>,
-      2: <Tag color="success">审核通过</Tag>,
+  const { Option } = Select;
+  const [list, setList] = useState([]); // 任务列表
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await findInfo();
+        const { resultList } = res;
+        console.log(resultList, "taskResultList");
+        setList(resultList);
+      } catch (error) {
+        console.log("error in findInfo!!");
+      }
     };
+    fetchData();
+  }, []);
+
+  // 删除回调
+  const onConfirm = async (data) => {
+    console.log(data, "deleteData");
+    await deleteTask(data._id); // 这个接口里面是_id而不是id
+
+    // 创建一个新的任务数组，排除被删除的任务
+    const updatedList = list.filter((item) => item._id !== data._id);
+    // 更新状态,重新渲染页面
+    setList(updatedList);
+  };
+
+  // 定义状态枚举
+  const status = {
+    1: <Tag color="success">正常</Tag>,
+    2: <Tag color="warning">紧急</Tag>,
+  };
   const columns = [
     {
       title: "任务名称",
-      dataIndex: "title",
+      dataIndex: "name",
       width: 220,
     },
     {
       title: "状态",
-      dataIndex: "status",
-      // data - 后端返回的状态status 根据它做条件渲染
-      // data === 1 => 待审核
-      // data === 2 => 审核通过
+      dataIndex: "classes",
+      // 这里的data也就是dataIndex的值
       render: (data) => status[data],
     },
     {
       title: "提交时间",
-      dataIndex: "pubdate",
+      dataIndex: "time",
     },
     {
       title: "操作",
@@ -58,7 +85,7 @@ const Task = () => {
             <Popconfirm
               title="删除文章"
               description="确认要删除当前文章吗?"
-              // onConfirm={()=>onConfirm(data)}
+              onConfirm={() => onConfirm(data)}
               okText="Yes"
               cancelText="No">
               <Button
@@ -75,6 +102,8 @@ const Task = () => {
   ];
   return (
     <div>
+      {/* {list.length && <div>{list[0]['name']}</div>} */}
+      {/* 测试代码 */}
       <Card
         title={
           <Breadcrumb
@@ -123,9 +152,9 @@ const Task = () => {
       {/* <Card title={`根据筛选条件共查询到 ${count} 条结果：`}> */}
       <Card title={`根据筛选条件共查询到 ${1} 条结果：`}>
         <Table
-          rowKey="id"
+          rowKey="_id"
           columns={columns}
-          // dataSource={list}
+          dataSource={list}
           // pagination={{
           //   total: count,
           //   pageSize: reqData.per_page,

@@ -4,14 +4,14 @@ import logo from "../../assets/logo.png";
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../store/modules/user";
 import { Link, useNavigate } from "react-router-dom";
-import { testLogin, getProfileAPI } from '../../apis/user'
+import { getLogin, getProfileAPI } from '../../apis/user'
 
 const Login = () => {
   //   使用dispach方法
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = async (values) => {
-    // console.log(res);
+    console.log(values,'finish');
     //触发异步的action:fetchLogin
     await dispatch(fetchLogin(values));
     //登录之后跳转到首页

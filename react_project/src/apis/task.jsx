@@ -2,7 +2,7 @@
 
 import { request } from "../utils"
 
-// 1. 获取频道列表
+// 1. 获取任务紧急度列表
 export function getChannelAPI () {
   return request({
     url: '/users/channels',
@@ -30,7 +30,6 @@ export function updateArticleAPI (data) {
 
 
 // 获取文章列表
-
 export function getArticleListAPI (params) {
   return request({
     url: "/mp/articles",
@@ -41,7 +40,6 @@ export function getArticleListAPI (params) {
 
 
 // 删除文章
-
 export function delArticleAPI (id) {
   return request({
     url: `/mp/articles/${id}`,
@@ -51,10 +49,45 @@ export function delArticleAPI (id) {
 
 
 // 获取文章详情
-
 export function getArticleById (id) {
   return request({
     url: `/mp/articles/${id}`
   })
 }
 
+// ------------新增---------------------
+
+// 获取任务列表
+export function findInfo() {
+  return request({
+    url: '/users/findTask',
+    method: 'GET'
+  })
+}
+
+// 新增任务
+export function addTask(newObj) {
+  return request({
+    url: '/users/addTask',
+    method: 'POST',
+    data: newObj
+  })
+}
+
+// 删除任务
+export function deleteTask(taskId) {
+  return request({
+    url: '/users/deleteTask',
+    method: 'DELETE',
+    data: {taskId}
+  })
+}
+
+// 更新任务  ---还未测试
+export function updateTask(taskId) {
+  return request({
+    url: '/users/updateTask',
+    method: 'PUT',
+    data: {taskId}
+  })
+}

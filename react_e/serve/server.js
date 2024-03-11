@@ -4,7 +4,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const app = require('../app')
+const { ObjectId } = require('mongodb');
 
 //链接mongo 并且使用task_manager这个集合
 const DB_URL = "mongodb://localhost/task_manager";
@@ -15,44 +15,40 @@ mongoose.connection.on("connected", function () {
 
 // 定义 channel 的 Schema
 const channelSchema = new Schema({
-  id: {type:Number,default:0},
-  name: {type:String,default:'fengzi'}
+  name: { type: String, default: "" },
+  classes: { type: Number, default: 0 },
+  detail: { type: String, default: "" },
+  time: { type: Number, default: 0 },
 });
 
-// 定义 data 的 Schema
-const dataSchema = new Schema({
-  channels: [channelSchema]
-});
-
-
-
-const User = mongoose.model(
-  "taskData",
-  channelSchema
-);
+const User = mongoose.model("taskData", channelSchema);
 
 // 新增数据
-function createData(params) {
-  User.create(
-    {
-      id:1,
-      name:'fengfeng'
-    },
-    function (err, doc) {
+function createData(newInfoObj) {
+  return new Promise((resolve, reject) => {
+    User.create(newInfoObj, function (err, doc) {
       if (!err) {
-        console.log(doc);
+        resolve(doc)
       } else {
-        console.log(err);
+        // console.log(err);
+        reject(err);
       }
-    }
-  );
+    });
+  });
 }
 
 // 删除数据
-function deleteData(params) {
-  User.remove({ user: "xiaolan" }, function (err, doc) {
-    console.log(doc);
-  });
+function deleteData(id) {
+  console.log(typeof id,'id998');
+  return new Promise((resolve,reject) => {
+    User.deleteOne({ _id:ObjectId(id)}, function (err, doc) {
+      if (!err) {
+        resolve(doc);
+      } else {
+        reject(err);
+      }
+    });
+  })
 }
 
 // 修改数据
@@ -61,17 +57,32 @@ function updateData(params) {
     console.log(doc);
   });
 }
+function updateData() {
+  return new Promise((resolve, reject) => {
+    User.updateOne({ _id:ObjectId(id)},{ $set: { name: 'asobobibobi' } }, function (err, doc) {
+      if (!err) {
+        resolve(doc);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
 
 //查询数据
-function findData(res) {
-  let result
-  User.find({}, function (err, doc) {
-    res.json(doc);
-    // console.log(doc,'222');
-    // result = doc
+function findData() {
+  return new Promise((resolve, reject) => {
+    User.find({}, function (err, doc) {
+      if (!err) {
+        resolve(doc);
+      } else {
+        reject(err);
+      }
+    });
   });
-  return result
 }
+
+
 
 // 新增数据
 // User.create({
@@ -97,9 +108,8 @@ function findData(res) {
 
 //查询数据
 // User.find({}, function (err, doc) {
-  // res.json(doc);
-//   console.log(doc,'12312312');
+//   // res.json(doc);
+//   console.log(doc,'12312312'); // doc传过来的就是一个数组，数组里面是一个个对象
 // });
-
 
 module.exports = { createData, deleteData, updateData, findData };

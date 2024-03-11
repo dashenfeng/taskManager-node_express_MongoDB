@@ -1,13 +1,36 @@
-import { Breadcrumb, Button, Card, Form, Input, Select, Space } from "antd";
+import { Breadcrumb, Button, Card, Form, Input, Select, Space,message } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import { useChannel } from "../../hooks/useChannel";
+import { addTask } from "../../apis/task";
 
 const Publish = () => {
   const { Option } = Select;
   const { channelList } = useChannel();
+
+  // 提交表单
+  const onFinish = (formValue) => {
+    console.log(formValue, "formValue");
+    const { name, classes, detail } = formValue;
+    const reqData = {
+      name,
+      classes,
+      detail,
+      time: Date.now(),
+    };
+    // // 提交  根据是否有id调用不同接口（编辑|新增）
+    const submitData = async () => {
+      let res;
+      res = await addTask(reqData); // 新增
+      return res;
+    };
+    submitData();
+    message.success("提交成功");
+    navigator("/article");
+  };
+
   return (
     <div className="home">
       <Card
@@ -24,13 +47,13 @@ const Publish = () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 0 }}
-          // onFinish={onFinish}
+          onFinish={onFinish}
           // form={form}
         >
           {/* 标题输入栏 */}
           <Form.Item
             label="任务名称"
-            name="title"
+            name="name"
             rules={[{ required: true, message: "请输入任务名称" }]}>
             <Input
               placeholder="例如：构建一个后台管理系统"
@@ -40,7 +63,7 @@ const Publish = () => {
           {/* 频道的选择栏 */}
           <Form.Item
             label="任务分类"
-            name="channel_id"
+            name="classes"
             rules={[{ required: true, message: "请选择任务分类" }]}>
             <Select placeholder="请选择任务分类" style={{ width: 400 }}>
               {channelList.map((item) => (
@@ -54,7 +77,7 @@ const Publish = () => {
           {/* 内容区域 */}
           <Form.Item
             label="任务描述"
-            name="content"
+            name="detail"
             rules={[{ required: true, message: "请输入任务描述" }]}>
             {/* 富文本编辑器的位置 */}
             <ReactQuill

@@ -9,7 +9,7 @@ function useChannel(){
    //1.封装函数，在函数体内调用接口
    const getChannelList = async () => {
      const res = await getChannelAPI();
-     console.log(res)
+    //  console.log(res)
      setChannelList(res.channels);
    };
    //2.调用函数

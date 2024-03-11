@@ -10,7 +10,7 @@ export function getProfileAPI() {
 }
 
 // 登录测试
-export function testLogin(data) {
+export function getLogin(data) {
   return request({
     url: `/users`,
     method: "GET",
@@ -18,7 +18,7 @@ export function testLogin(data) {
   });
 }
 // 注册测试
-export function testZhuce() {
+export function register() {
   return request({
     url: `/users`,
     method: "POST",

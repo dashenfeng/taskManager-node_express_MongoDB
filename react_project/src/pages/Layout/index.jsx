@@ -15,6 +15,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 const { Header, Sider } = Layout;
 
+// 左侧边栏要显示的三个东西
 const items = [
   {
     label: "首页",
@@ -34,7 +35,10 @@ const items = [
 ];
 
 const GeekLayout = () => {
+
+// 测试结束↑
   const navigate = useNavigate();
+  // 跳转到对应路由
   const onMenuClick = (route) => {
     console.log("菜单被点击了", route);
     const path = route.key;
