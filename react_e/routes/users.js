@@ -16,8 +16,10 @@ router.post("/", function (req, res, next) {
 /* 登录请求 */
 let jwt = require("jsonwebtoken");
 router.get("/", function (req, res, next) {
-  console.log(req.query);
-  if (req.query.username == "admin" && req.query.password == "admin") {
+  // console.log(req,'req');
+  console.log(req.query,'query');
+  console.log(req.params,'params');
+  if (req.query.username == "15812341234" && req.query.password == "123456") {
     // 登陆成功后，返回token
     let token = jwt.sign({ username: "admin" }, "testkey", {
       expiresIn: "30d",
@@ -32,7 +34,7 @@ router.get("/", function (req, res, next) {
     res.json({
       code: 0,
       msg: "登录失败",
-      token
+      token:null
     });
   }
 });
