@@ -65,8 +65,8 @@ router.get("/channels", function (req, res, next) {
   // 假装返回
   res.json({
     code: 1,
-    msg: "注册成功",
-    data:data
+    msg: "查询成功",
+    channels:data
   });
 });
 
