@@ -1,18 +1,13 @@
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Form,
-  Input,
-  Select,
-  Space,
-} from "antd";
+import { Breadcrumb, Button, Card, Form, Input, Select, Space } from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./index.scss";
 import { Link } from "react-router-dom";
-// const Option=Selection()
+import { useChannel } from "../../hooks/useChannel";
+
 const Publish = () => {
+  const { Option } = Select;
+  const { channelList } = useChannel();
   return (
     <div className="home">
       <Card
@@ -21,7 +16,7 @@ const Publish = () => {
           <Breadcrumb
             items={[
               { title: <Link to={"/"}>首页</Link> },
-              { title: '创建任务' },
+              { title: "创建任务" },
             ]}
           />
         }>
@@ -31,13 +26,16 @@ const Publish = () => {
           initialValues={{ type: 0 }}
           // onFinish={onFinish}
           // form={form}
-          >
+        >
           {/* 标题输入栏 */}
           <Form.Item
             label="任务名称"
             name="title"
             rules={[{ required: true, message: "请输入任务名称" }]}>
-            <Input placeholder="例如：构建一个后台管理系统" style={{ width: 400 }} />
+            <Input
+              placeholder="例如：构建一个后台管理系统"
+              style={{ width: 400 }}
+            />
           </Form.Item>
           {/* 频道的选择栏 */}
           <Form.Item
@@ -45,11 +43,11 @@ const Publish = () => {
             name="channel_id"
             rules={[{ required: true, message: "请选择任务分类" }]}>
             <Select placeholder="请选择任务分类" style={{ width: 400 }}>
-              {/* {channelList.map((item) => (
+              {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}
                 </Option>
-              ))} */}
+              ))}
             </Select>
           </Form.Item>
 
@@ -74,7 +72,6 @@ const Publish = () => {
           </Form.Item>
         </Form>
       </Card>
-
     </div>
   );
 };

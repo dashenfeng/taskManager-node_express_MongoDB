@@ -2,7 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 // import { setToken as _setToken, getToken, removeToken } from '../../utils'
-import { loginAPI, getProfileAPI } from '../../apis/user'
+import { testLogin, getProfileAPI } from '../../apis/user'
 
 const userStore = createSlice({
   name: "user",
@@ -39,9 +39,9 @@ const { setToken, setUserInfo, clearUserInfo } = userStore.actions
 const userReducer = userStore.reducer
 
 // 登录获取token异步方法封装
-const fetchLogin = (loginForm) => {
+const fetchLogin = (data) => {
   return async (dispatch) => {
-    const res = await loginAPI(loginForm)
+    const res = await testLogin(data)
     dispatch(setToken(res.data.token))
   }
 }

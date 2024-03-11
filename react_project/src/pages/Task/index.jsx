@@ -7,16 +7,73 @@ import {
   Radio,
   DatePicker,
   Select,
-  // Popconfirm,
+  Table,
+  Space,
+  Popconfirm,
+  Tag
 } from "antd";
 // 引入汉化包 时间选择器显示中文
 import locale from "antd/es/date-picker/locale/zh_CN";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useChannel } from "../../hooks/useChannel";
 
-// 导入资源
-import { Table } from "antd";
 const Task = () => {
+  
+  const { channelList } = useChannel();
   const { RangePicker } = DatePicker;
-  // const { Option } = Select
+  const { Option } = Select
+    // 定义状态枚举
+    const status = {
+      1: <Tag color="warning">待审核</Tag>,
+      2: <Tag color="success">审核通过</Tag>,
+    };
+  const columns = [
+    {
+      title: "任务名称",
+      dataIndex: "title",
+      width: 220,
+    },
+    {
+      title: "状态",
+      dataIndex: "status",
+      // data - 后端返回的状态status 根据它做条件渲染
+      // data === 1 => 待审核
+      // data === 2 => 审核通过
+      render: (data) => status[data],
+    },
+    {
+      title: "提交时间",
+      dataIndex: "pubdate",
+    },
+    {
+      title: "操作",
+      render: (data) => {
+        return (
+          <Space size="middle">
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined />}
+              // onClick={() => navigate(`/publish?id=${data.id}`)}
+            />
+            <Popconfirm
+              title="删除文章"
+              description="确认要删除当前文章吗?"
+              // onConfirm={()=>onConfirm(data)}
+              okText="Yes"
+              cancelText="No">
+              <Button
+                type="primary"
+                danger
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          </Space>
+        );
+      },
+    },
+  ];
   return (
     <div>
       <Card
@@ -29,8 +86,9 @@ const Task = () => {
           />
         }
         style={{ marginBottom: 20 }}>
-        <Form initialValues={{ status: "" }} 
-        // onFinish={onFinish}
+        <Form
+          initialValues={{ status: "" }}
+          // onFinish={onFinish}
         >
           <Form.Item label="状态" name="status">
             <Radio.Group>
@@ -40,13 +98,13 @@ const Task = () => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item label="频道" name="channel_id">
-            <Select placeholder="请选择文章频道" style={{ width: 120 }}>
-              {/* {channelList.map((item) => (
+          <Form.Item label="分类" name="channel_id">
+            <Select placeholder="请选择任务分类" style={{ width: 120 }}>
+              {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}
                 </Option>
-              ))} */}
+              ))}
             </Select>
           </Form.Item>
 
@@ -65,10 +123,9 @@ const Task = () => {
       {/* 表格区域 */}
       {/* <Card title={`根据筛选条件共查询到 ${count} 条结果：`}> */}
       <Card title={`根据筛选条件共查询到 ${1} 条结果：`}>
-
         <Table
           rowKey="id"
-          // columns={columns}
+          columns={columns}
           // dataSource={list}
           // pagination={{
           //   total: count,

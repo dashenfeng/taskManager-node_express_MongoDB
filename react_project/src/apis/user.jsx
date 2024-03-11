@@ -1,14 +1,5 @@
 // 用户相关的所有请求
 import { request } from "../utils";
-// 1. 登录请求
-
-export function loginAPI(formData) {
-  return request({
-    url: "/authorizations",
-    method: "POST",
-    data: formData,
-  });
-}
 
 // 2. 获取用户信息
 
@@ -24,7 +15,7 @@ export function testLogin(data) {
   return request({
     url: `/users`,
     method: "GET",
-    data,
+    params:data,
   });
 }
 // 注册测试
