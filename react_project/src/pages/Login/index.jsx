@@ -2,26 +2,22 @@ import { Button, Card, Form, Input, message } from "antd";
 import "./index.scss";
 import logo from "../../assets/logo.png";
 import { useDispatch } from "react-redux";
-// import { fetchLogin } from "../../store/modules/user";
+import { fetchLogin } from "../../store/modules/user";
 import { Link, useNavigate } from "react-router-dom";
-import { testLogin } from "../../apis/user";
-const Login = () => {
+import { testLogin, getProfileAPI } from '../../apis/user'
 
+const Login = () => {
   //   使用dispach方法
-  // const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = async (values) => {
-    console.log(values);
-    const data = {username:'15812341234',password:'123456'}
-    const res = await testLogin(data);
-    console.log(res ,1111111)
+    // console.log(res);
     //触发异步的action:fetchLogin
-    // await dispatch(fetchLogin(values));
+    await dispatch(fetchLogin(values));
     //登录之后跳转到首页
-    navigate("/");
+    // navigate("/");
     //提示登录成功的信息
     message.success("登录成功");
-
   };
   return (
     <div className="login">
@@ -31,7 +27,7 @@ const Login = () => {
         <Form onFinish={onFinish} validateTrigger="onBlur">
           {/* <Form validateTrigger="onBlur"> */}
           <Form.Item
-            name="mobile"
+            name="username"
             //规则按照顺序执行，等到所有的满足规则，才ok
             rules={[
               {

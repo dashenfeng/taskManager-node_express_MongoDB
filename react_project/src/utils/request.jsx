@@ -19,6 +19,7 @@ request.interceptors.request.use((config) => {
   // 2. 按照后端的格式要求做token拼接
   const token = getToken()
   if (token) {
+    // config.headers.Authorization = `Bearer ${token}`
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
@@ -39,8 +40,8 @@ request.interceptors.response.use((response) => {
   console.dir(error)
   if (error.response.status === 401) {
     removeToken()
-    router.navigate('/login')
-    window.location.reload()
+    // router.navigate('/login')
+    // window.location.reload()
   }
   return Promise.reject(error)
 })

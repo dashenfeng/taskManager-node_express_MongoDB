@@ -2,7 +2,6 @@
 import { request } from "../utils";
 
 // 2. 获取用户信息
-
 export function getProfileAPI() {
   return request({
     url: "/user/profile",

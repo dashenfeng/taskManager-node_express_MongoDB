@@ -5,7 +5,7 @@ import { request } from "../utils"
 // 1. 获取频道列表
 export function getChannelAPI () {
   return request({
-    url: '/channels',
+    url: '/users/channels',
     method: 'GET'
   })
 }
@@ -20,7 +20,6 @@ export function createArticleAPI (data) {
 }
 
 // 更新文章表单
-
 export function updateArticleAPI (data) {
   return request({
     url: `/mp/articles/${data.id}?draft=false`,

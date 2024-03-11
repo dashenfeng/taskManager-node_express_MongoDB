@@ -1,7 +1,7 @@
 // 和用户相关的状态管理
 
 import { createSlice } from '@reduxjs/toolkit'
-// import { setToken as _setToken, getToken, removeToken } from '../../utils'
+import { setToken as _setToken, getToken, removeToken } from '../../utils'
 import { testLogin, getProfileAPI } from '../../apis/user'
 
 const userStore = createSlice({
@@ -16,7 +16,7 @@ const userStore = createSlice({
   reducers: {
     setToken (state, action) {
       state.token = action.payload
-      // _setToken(action.payload)
+      _setToken(action.payload)
     },
     setUserInfo (state, action) {
       state.userInfo = action.payload
@@ -42,7 +42,8 @@ const userReducer = userStore.reducer
 const fetchLogin = (data) => {
   return async (dispatch) => {
     const res = await testLogin(data)
-    dispatch(setToken(res.data.token))
+    console.log(res,"11111111111111")
+    dispatch(setToken(res.token))
   }
 }
 
