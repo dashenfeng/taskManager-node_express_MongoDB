@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+let {createData,deleteData,updateData,findData} = require('../serve/server')
+
 
 
 /* 注册请求 */
@@ -19,8 +21,14 @@ router.get("/", function (req, res, next) {
   // console.log(req,'req');
   console.log(req.query,'query');
   console.log(req.params,'params');
+
+  createData()
+  // updateData()
+  // deleteData()
   if (req.query.username == "15812341234" && req.query.password == "123456") {
     // 登陆成功后，返回token
+    // const resData = findData()
+    // console.log(resData,'resData');
     let token = jwt.sign({ username: "admin" }, "testkey", {
       expiresIn: "30d",
       algorithm: "HS256",
@@ -37,6 +45,29 @@ router.get("/", function (req, res, next) {
       token:null
     });
   }
+});
+
+// 获取数据列表
+/* 注册请求 */
+router.get("/channels", function (req, res, next) {
+  console.log(req.body);
+  const data = [
+    {
+      id:1,
+      name:'fengfeng'
+    },
+    {
+      id:2,
+      name:'wanwan'
+    }
+  ]
+  // res.send('respond with a resource');
+  // 假装返回
+  res.json({
+    code: 1,
+    msg: "注册成功",
+    data:data
+  });
 });
 
 module.exports = router;

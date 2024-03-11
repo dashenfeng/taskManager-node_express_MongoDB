@@ -3,6 +3,8 @@
  */
 const express = require("express");
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
+const app = require('../app')
 
 //链接mongo 并且使用task_manager这个集合
 const DB_URL = "mongodb://localhost/task_manager";
@@ -11,14 +13,65 @@ mongoose.connection.on("connected", function () {
   console.log("mongo connect success");
 });
 
-//类似于mysql的表 mongo里有文档、字段的概念
+// 定义 channel 的 Schema
+const channelSchema = new Schema({
+  id: {type:Number,default:0},
+  name: {type:String,default:'fengzi'}
+});
+
+// 定义 data 的 Schema
+const dataSchema = new Schema({
+  channels: [channelSchema]
+});
+
+
+
 const User = mongoose.model(
-  "user",
-  new mongoose.Schema({
-    user: { type: String, require: true },
-    age: { type: Number, require: true, default: 0 },
-  })
+  "taskData",
+  channelSchema
 );
+
+// 新增数据
+function createData(params) {
+  User.create(
+    {
+      id:1,
+      name:'fengfeng'
+    },
+    function (err, doc) {
+      if (!err) {
+        console.log(doc);
+      } else {
+        console.log(err);
+      }
+    }
+  );
+}
+
+// 删除数据
+function deleteData(params) {
+  User.remove({ user: "xiaolan" }, function (err, doc) {
+    console.log(doc);
+  });
+}
+
+// 修改数据
+function updateData(params) {
+  User.update({ user: "xiaolan1" }, { $set: { age: 26 } }, function (err, doc) {
+    console.log(doc);
+  });
+}
+
+//查询数据
+function findData(res) {
+  let result
+  User.find({}, function (err, doc) {
+    res.json(doc);
+    // console.log(doc,'222');
+    // result = doc
+  });
+  return result
+}
 
 // 新增数据
 // User.create({
@@ -42,21 +95,11 @@ const User = mongoose.model(
 //     console.log(doc)
 // })
 
-const app = express(); //新建app模块
+//查询数据
+// User.find({}, function (err, doc) {
+  // res.json(doc);
+//   console.log(doc,'12312312');
+// });
 
-// 当访问这个地址时，就会发送数据回前端
-app.get("/", function (req, res) {
-  res.send("<h1>Hello world</h1>"); //发送Html
-});
 
-app.get("/data", function (req, res) {
-  //查询数据
-  User.find({}, function (err, doc) {
-    res.json(doc);
-  });
-  // res.json({name:'imooc React App',type:'IT'}) //发送json
-});
-
-app.listen(9093, function () {
-  console.log("Node app start at port 9093");
-});
+module.exports = { createData, deleteData, updateData, findData };
