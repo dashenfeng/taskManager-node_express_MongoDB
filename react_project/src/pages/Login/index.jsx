@@ -1,29 +1,37 @@
-import { Button, Card, Form, Input,message } from "antd";
+import { Button, Card, Form, Input, message } from "antd";
 import "./index.scss";
 import logo from "../../assets/logo.png";
 // import { useDispatch } from "react-redux";
 // import { fetchLogin } from "../../store/modules/user";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
+import { testZhuce } from "../../apis/user";
 const Login = () => {
-//   使用dispach方法
-    // const dispatch = useDispatch();
-    // const navigate = useNavigate();
-    const onFinish = async (values) => {
-      console.log(values);
-      //触发异步的action:fetchLogin
-      // await dispatch(fetchLogin(values));
-      //登录之后跳转到首页
-      // navigate("/");
-      //提示登录成功的信息
-      message.success("登录成功");
-    };
+  const test = async () => {
+    const res = await testZhuce();
+    console.log(res);
+  };
+
+  test();
+
+  //   使用dispach方法
+  // const dispatch = useDispatch();
+  const navigate=useNavigate()
+  const onFinish = async (values) => {
+    console.log(values);
+    //触发异步的action:fetchLogin
+    // await dispatch(fetchLogin(values));
+    //登录之后跳转到首页
+    navigate("/");
+    //提示登录成功的信息
+    message.success("登录成功");
+  };
   return (
     <div className="login">
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
         <Form onFinish={onFinish} validateTrigger="onBlur">
-        {/* <Form validateTrigger="onBlur"> */}
+          {/* <Form validateTrigger="onBlur"> */}
           <Form.Item
             name="mobile"
             //规则按照顺序执行，等到所有的满足规则，才ok
@@ -58,7 +66,9 @@ const Login = () => {
         </Form>
 
         {/* 注册进入 */}
-       <Link className="register-link" to="/register">没有账号？免费注册</Link> 
+        <Link className="register-link" to="/register">
+          没有账号？免费注册
+        </Link>
       </Card>
     </div>
   );

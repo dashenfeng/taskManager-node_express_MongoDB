@@ -2,7 +2,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "../pages/Layout";
 import Login from "../pages/Login";
-// import { AuthRoute } from "../components/AuthRoute";
 import Home from "../pages/Home";
 import Task from "../pages/Task";
 import Publish from "../pages/Publish";
@@ -17,9 +16,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      // <AuthRoute>
-      //   <Layout />
-      // </AuthRoute>
       <Layout />
 
     ),
