@@ -11,7 +11,6 @@ export function getChannelAPI () {
 }
 
 // 2. 提交文章表单
-
 export function createArticleAPI (data) {
   return request({
     url: '/mp/articles?draft=false',
