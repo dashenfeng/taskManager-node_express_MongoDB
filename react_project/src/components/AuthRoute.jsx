@@ -1,5 +1,5 @@
 //高阶组件，测试有无Token
-
+import PropTypes from "prop-types";
 import { getToken } from "../utils/token";
 import { Navigate } from "react-router-dom";
 
@@ -14,4 +14,6 @@ export function AuthRoute({ children }) {
   }
 }
 
-
+AuthRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+};
