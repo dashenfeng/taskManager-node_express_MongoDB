@@ -9,7 +9,7 @@ export function getProfileAPI() {
   });
 }
 
-// 登录测试
+// 登录
 export function getLogin(data) {
   return request({
     url: `/users`,
@@ -17,7 +17,7 @@ export function getLogin(data) {
     params:data,
   });
 }
-// 注册测试
+// 注册
 export function register() {
   return request({
     url: `/users`,

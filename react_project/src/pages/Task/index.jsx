@@ -18,6 +18,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useChannel } from "../../hooks/useChannel";
 import { deleteTask, findInfo, updateTask } from "../../apis/task";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 const Task = () => {
   const navigate = useNavigate();
@@ -31,8 +32,16 @@ const Task = () => {
       try {
         const res = await findInfo();
         const { resultList } = res;
-        console.log(resultList, "taskResultList");
-        setList(resultList);
+        console.log(res)
+        // console.log(resultList, "taskResultList");
+        //时间的格式化
+        const currentList = resultList.map(obj => {
+          // const formattedTime = new Date(obj.time).for();
+          const formattedTime=dayjs(obj.time).format("YYYY年MM月DD日 hh:mm:ss")
+          return { ...obj, time: formattedTime };
+        });
+        console.log(currentList,"格式化时间后的列表");
+        setList(currentList);
       } catch (error) {
         console.log("error in findInfo!!");
       }
@@ -44,7 +53,6 @@ const Task = () => {
   const onConfirm = async (data) => {
     console.log(data, "deleteData");
     await deleteTask(data._id); // 这个接口里面是_id而不是id
-
     // 创建一个新的任务数组，排除被删除的任务
     const updatedList = list.filter((item) => item._id !== data._id);
     // 更新状态,重新渲染页面
@@ -53,13 +61,7 @@ const Task = () => {
 
   //编辑文章的回调
   const onWriteTask = async (data) => {
-    console.log(data.classes, "编辑文章");
-    // navigate({
-    //   pathname:'/publish',
-    //   // state:{_id:"data._id",name:data.name,detail:data.detail,classes:data.classes}
-    //   state:{_id:"data._id"}
-
-    // });
+    // console.log(data.classes, "编辑文章");
     navigate(`/publish?id=${data._id}&name=${data.name}&detail=${data.detail}&classes=${data.classes}`)
   };
 
@@ -135,8 +137,8 @@ const Task = () => {
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={""}>全部</Radio>
-              <Radio value={1}>待审核</Radio>
-              <Radio value={2}>审核通过</Radio>
+              <Radio value={1}>正常</Radio>
+              <Radio value={2}>紧急</Radio>
             </Radio.Group>
           </Form.Item>
 

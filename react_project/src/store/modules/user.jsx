@@ -42,7 +42,7 @@ const userReducer = userStore.reducer
 const fetchLogin = (data) => {
   return async (dispatch) => {
     const res = await getLogin(data) // 发起登录请求
-    console.log(res,"11111111111111")
+    console.log(res,"登录请求返回结果")
     dispatch(setToken(res.token))
   }
 }

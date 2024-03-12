@@ -11,14 +11,20 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./index.scss";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useChannel } from "../../hooks/useChannel";
 import { addTask, updateTask } from "../../apis/task";
 import { useState, useEffect } from "react";
 const Publish = () => {
   const { Option } = Select;
   const { channelList } = useChannel();
-
+  const navigate = useNavigate();
+  
   // 提交表单
   const onFinish = (formValue) => {
     console.log(formValue, "formValue");
@@ -35,21 +41,21 @@ const Publish = () => {
       res = await addTask(reqData); // 新增
       return res;
     };
-    const upData = async () => {
-      const res = await updateTask(articleId);
+    const upData = async (data) => {
+      console.log(data,"传入的参数");
+      const res = await updateTask(data);
       return res;
-      
     };
-    
+
     if (articleId) {
-      upData();
-      console.log(articleId,"resssssssssssss");
+      upData({...reqData,articleId});
+      console.log(articleId, "更新数据");
     } else {
       submitData();
       console.log(reqData);
     }
     message.success("提交成功");
-    // navigator("/task");
+    navigate("/task");
   };
 
   // 回填数据
@@ -74,7 +80,7 @@ const Publish = () => {
         detail,
         articleId,
       };
-      console.log(data);
+  
       form.setFieldsValue({
         ...data,
       });
@@ -143,6 +149,9 @@ const Publish = () => {
             <Space>
               <Button size="large" type="primary" htmlType="submit">
                 提交任务
+              </Button>
+              <Button size="large" type="primary" htmlType="submit">
+                取消任务
               </Button>
             </Space>
           </Form.Item>
