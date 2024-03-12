@@ -43,14 +43,18 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <Suspense fallback={"加载中"}>
+      <LoginRoute>
         <Login />
-      </Suspense>
+      </LoginRoute>
     ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <LoginRoute>
+        <Register />
+      </LoginRoute>
+    ),
   },
 ]);
 // const isUserLoggedIn = "false";

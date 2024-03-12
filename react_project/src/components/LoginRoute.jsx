@@ -3,17 +3,17 @@ import PropTypes from "prop-types";
 import { getToken } from "../utils/token";
 import { Navigate,useLocation } from "react-router-dom";
 
-export function AuthRoute({ children }) {
+export function LoginRoute({ children }) {
   const url = useLocation()
   console.log(url.pathname,'url__useLocation');
   const token = getToken();
-  if (token) {
+  if (!token) {
     return <>{children}</>;
   } else {
-    return <Navigate to={"/login"} replace />;
+    return <Navigate to={"/"} replace />;
   }
 }
 
-AuthRoute.propTypes = {
+LoginRoute.propTypes = {
   children: PropTypes.node.isRequired,
 };
