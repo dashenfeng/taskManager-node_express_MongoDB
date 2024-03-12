@@ -4,9 +4,7 @@ import { getToken } from "../utils/token";
 import { Navigate } from "react-router-dom";
 
 export function AuthRoute({ children }) {
-  console.log("1111111111111");
   const token = getToken();
-  console.log(token, "当前的token值");
   if (token) {
     return <>{children}</>;
   } else {

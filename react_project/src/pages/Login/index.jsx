@@ -4,24 +4,29 @@ import logo from "../../assets/logo.png";
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../store/modules/user";
 import { Link, useNavigate } from "react-router-dom";
-import { getLogin, getProfileAPI } from '../../apis/user'
+import { getToken } from "../../utils/token";
 
 const Login = () => {
   //   使用dispach方法
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = async (values) => {
-    console.log(values,'finish');
+    console.log(values, "finish");
     //触发异步的action:fetchLogin
     await dispatch(fetchLogin(values));
     //登录之后跳转到首页
-    navigate("/");
+    const token = getToken();
+    if (token) {
+      message.success("登录成功");
+      navigate("/");
+    }else{
+      message.warning("请注册账号");
+    }
     //提示登录成功的信息
-    message.success("登录成功");
+    //
   };
   return (
     <div className="login">
-      
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
@@ -49,6 +54,10 @@ const Login = () => {
                 required: true,
                 message: "请输入密码",
               },
+              // {
+              //   pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+              //   message: "请输入正确的密码格式（字母数字组合，六位以上）！",
+              // }
             ]}
             hasFeedback>
             <Input.Password size="large" placeholder="请输入密码" />
