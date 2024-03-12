@@ -38,9 +38,11 @@ const Task = () => {
   //获取任务列表
   const [list, setList] = useState([]); // 任务列表
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (limitObj) => {
       try {
-        const res = await findInfo();
+        // const {classes,begin_pubdate,end_pubdate} = limitObj
+        // console.log(classes,begin_pubdate,end_pubdate,'classes,begin_pubdate,end_pubdate');
+        const res = await findInfo(limitObj);
         const { resultList } = res;
         // console.log(res);
         console.log(resultList, "taskResultList");
@@ -57,19 +59,29 @@ const Task = () => {
         console.log("error in findInfo!!");
       }
     };
-    fetchData();
-  }, []);
+    fetchData(reqData);
+  }, [reqData]);
 
   // 2. 获取筛选数据
   const onFinish = (formValue) => {
-    console.log(formValue.date[0].format("YYYY年MM月DD日"), "筛选数据");
+    // console.log(formValue.date[0].format("YYYY年MM月DD日"), "筛选数据"); // 如果只填了classes，没填这个就会报错
     // 3. 把表单收集到数据放到参数中(不可变的方式)
-    setReqData({
-      ...reqData,
-      classes: formValue.classes,
-      begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
-      end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
-    });
+    if (formValue.date) {
+      setReqData({
+        ...reqData,
+        classes: formValue.classes,
+        begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
+        end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
+      });
+    }else{
+      setReqData({
+        ...reqData,
+        classes: formValue.classes,
+        // begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
+        // end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
+      });
+    }
+    
     // console.log(reqData, "依赖项");
     // 4. 重新拉取文章列表 + 渲染table逻辑重复的 - 复用
     // reqData依赖项发生变化 重复执行副作用函数

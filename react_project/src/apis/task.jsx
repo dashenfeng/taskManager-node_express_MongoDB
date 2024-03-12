@@ -68,10 +68,11 @@ export function getRegister(data) {
 
 
 // 获取任务列表
-export function findInfo() {
+export function findInfo(limitObj) {
   return request({
     url: '/users/findTask',
-    method: 'GET'
+    method: 'GET',
+    params:limitObj
   })
 }
 
