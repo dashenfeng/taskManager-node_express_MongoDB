@@ -53,6 +53,7 @@ router.get("/", function (req, res, next) {
         res.json({
           code: 400,
           msg: "用户不存在",
+          token:''
         });
         throw new Error("用户不存在");
       }
@@ -63,6 +64,7 @@ router.get("/", function (req, res, next) {
         res.json({
           code: 400,
           msg: "账号或密码错误",
+          token:''
         });
         throw new Error("密码不匹配");
       }
