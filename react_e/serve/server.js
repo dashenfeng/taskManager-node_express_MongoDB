@@ -98,9 +98,10 @@ function deleteData(id) {
 }
 
 // 修改数据
-function updateData(id) {
+function updateData(data) {
+  const {articleId,name,classes,detail,time} = data
   return new Promise((resolve, reject) => {
-    User.updateOne({ _id:ObjectId(id)},{ $set: { name: 'asobobibobi' } }, function (err, doc) {
+    User.updateOne({ _id:ObjectId(articleId)},{ $set: { name,classes,detail,time } }, function (err, doc) {
       if (!err) {
         resolve(doc);
       } else {
