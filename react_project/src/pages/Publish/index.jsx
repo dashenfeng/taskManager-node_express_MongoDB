@@ -150,9 +150,6 @@ const Publish = () => {
               <Button size="large" type="primary" htmlType="submit">
                 提交任务
               </Button>
-              <Button size="large" type="primary" htmlType="submit">
-                取消任务
-              </Button>
             </Space>
           </Form.Item>
         </Form>
