@@ -13,11 +13,11 @@ const Login = () => {
   const onFinish = async (values) => {
     console.log(values,'finish');
     //触发异步的action:fetchLogin
-    // await dispatch(fetchLogin(values));
+    await dispatch(fetchLogin(values));
     //登录之后跳转到首页
-    // navigate("/");
+    navigate("/");
     //提示登录成功的信息
-    // message.success("登录成功");
+    message.success("登录成功");
   };
   return (
     <div className="login">
