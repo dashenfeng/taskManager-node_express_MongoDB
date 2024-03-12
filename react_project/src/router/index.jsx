@@ -38,7 +38,6 @@ const router = createBrowserRouter([
         path: "publish",
         element: (
           <Suspense fallback={"加载中"}>
-            {" "}
             <Publish />
           </Suspense>
         ),
