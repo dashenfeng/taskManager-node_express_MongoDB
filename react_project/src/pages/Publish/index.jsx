@@ -48,7 +48,7 @@ const Publish = () => {
     };
 
     if (articleId) {
-      upData();
+      upData({...reqData,articleId});
       console.log(articleId,"更新数据");
     } else {
       submitData();

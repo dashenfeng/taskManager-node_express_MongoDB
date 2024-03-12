@@ -85,6 +85,9 @@ const Task = () => {
     {
       title: "提交时间",
       dataIndex: "time",
+    },    {
+      title: "任务详情",
+      dataIndex: "detail",
     },
     {
       title: "操作",
