@@ -94,10 +94,11 @@ export function deleteTask(taskId) {
 }
 
 // 更新任务  ---还未测试
-export function updateTask(taskId) {
+export function updateTask(data) {
+  console.log(data,'更新数据的data');
   return request({
     url: '/users/updateTask',
     method: 'PUT',
-    data: {taskId}
+    data
   })
 }

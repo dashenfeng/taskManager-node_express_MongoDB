@@ -79,7 +79,7 @@ router.get("/findTask", function (req, res, next) {
 
   findData().then(result=>{
     res.json({
-      code: 1,
+      code: 200,
       msg: "查询成功",
       resultList:result
     });
@@ -128,7 +128,7 @@ router.delete("/deleteTask", function (req, res, next) {
 
 // 更新某个任务
 router.put("/updateTask", function (req, res, next) {
-  console.log(req.body,'req.body');
+  console.log(req.body,'req.body更新任务');
   const {taskId} = req.body
 
   updateData(taskId).then(result=>{
