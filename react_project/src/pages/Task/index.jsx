@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
   Breadcrumb,
@@ -16,10 +16,11 @@ import {
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useChannel } from "../../hooks/useChannel";
-import { deleteTask, findInfo } from "../../apis/task";
+import { deleteTask, findInfo, updateTask } from "../../apis/task";
 import { useEffect, useState } from "react";
 
 const Task = () => {
+  const navigate = useNavigate();
   const { channelList } = useChannel();
   const { RangePicker } = DatePicker;
   const { Option } = Select;
@@ -48,6 +49,18 @@ const Task = () => {
     const updatedList = list.filter((item) => item._id !== data._id);
     // 更新状态,重新渲染页面
     setList(updatedList);
+  };
+
+  //编辑文章的回调
+  const onWriteTask = async (data) => {
+    console.log(data.classes, "编辑文章");
+    // navigate({
+    //   pathname:'/publish',
+    //   // state:{_id:"data._id",name:data.name,detail:data.detail,classes:data.classes}
+    //   state:{_id:"data._id"}
+
+    // });
+    navigate(`/publish?id=${data._id}&name=${data.name}&detail=${data.detail}&classes=${data.classes}`)
   };
 
   // 定义状态枚举
@@ -81,6 +94,7 @@ const Task = () => {
               shape="circle"
               icon={<EditOutlined />}
               // onClick={() => navigate(`/publish?id=${data.id}`)}
+              onClick={() => onWriteTask(data)}
             />
             <Popconfirm
               title="删除文章"

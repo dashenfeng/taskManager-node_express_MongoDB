@@ -1,11 +1,20 @@
-import { Breadcrumb, Button, Card, Form, Input, Select, Space,message } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Form,
+  Input,
+  Select,
+  Space,
+  message,
+} from "antd";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./index.scss";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useChannel } from "../../hooks/useChannel";
-import { addTask } from "../../apis/task";
-
+import { addTask, updateTask } from "../../apis/task";
+import { useState, useEffect } from "react";
 const Publish = () => {
   const { Option } = Select;
   const { channelList } = useChannel();
@@ -26,10 +35,55 @@ const Publish = () => {
       res = await addTask(reqData); // 新增
       return res;
     };
-    submitData();
+    const upData = async () => {
+      const res = await updateTask(articleId);
+      return res;
+      
+    };
+    
+    if (articleId) {
+      upData();
+      console.log(articleId,"resssssssssssss");
+    } else {
+      submitData();
+      console.log(reqData);
+    }
     message.success("提交成功");
-    navigator("/article");
+    // navigator("/task");
   };
+
+  // 回填数据
+
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get("id");
+  const name = searchParams.get("name");
+  const detail = searchParams.get("detail");
+  const classes = searchParams.get("classes") == 1 ? "normal" : "emergency";
+  // const classes = searchParams.get("classes");
+
+  // console.log(articleId, "111111111111111111111");
+  // console.log(name, "2222222222222");
+  // 获取实例
+  const [form] = Form.useForm();
+  useEffect(() => {
+    // 1. 通过id获取数据
+    async function getArticleDetail() {
+      const data = {
+        name,
+        classes,
+        detail,
+        articleId,
+      };
+      console.log(data);
+      form.setFieldsValue({
+        ...data,
+      });
+    } // 只有有id的时候才能调用此函数回填
+    if (articleId) {
+      getArticleDetail();
+    }
+    // 2. 调用实例方法 完成回填
+  }, [articleId, form, name, classes, detail]);
 
   return (
     <div className="home">
@@ -48,8 +102,7 @@ const Publish = () => {
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 0 }}
           onFinish={onFinish}
-          // form={form}
-        >
+          form={form}>
           {/* 标题输入栏 */}
           <Form.Item
             label="任务名称"
