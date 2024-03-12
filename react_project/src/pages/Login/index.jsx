@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getToken } from "../../utils/token";
 
 const Login = () => {
-  //   使用dispach方法
+  //   使用dispach方法1
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onFinish = async (values) => {
