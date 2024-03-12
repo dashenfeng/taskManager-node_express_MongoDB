@@ -41,7 +41,7 @@ const userReducer = userStore.reducer
 // 登录获取token异步方法封装
 const fetchLogin = (data) => {
   return async (dispatch) => {
-    const res = await getLogin(data)
+    const res = await getLogin(data) // 发起登录请求
     console.log(res,"11111111111111")
     dispatch(setToken(res.token))
   }

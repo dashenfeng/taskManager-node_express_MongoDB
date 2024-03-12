@@ -1,18 +1,27 @@
 var express = require("express");
 var router = express.Router();
-let {createData,deleteData,updateData,findData} = require('../serve/server')
+let {createData,deleteData,updateData,findData, createUserInfo} = require('../serve/server')
 
 
 
 /* 注册请求 */
 router.post("/", function (req, res, next) {
-  console.log(req.body);
-  // res.send('respond with a resource');
-  // 假装返回
-  res.json({
-    code: 1,
-    msg: "注册成功",
-  });
+  console.log(req.body,'123123');
+  createUserInfo(req.body).then(result=>{
+    res.json({
+      code: 200,
+      msg: "注册成功",
+      newUserInfo:req.body,
+      message:result
+    });
+  }).catch(err=>{
+    res.json({
+      code: 500,
+      msg: "注册失败",
+      newUserInfo:null,
+      message:err
+    });
+  })
 });
 
 /* 登录 */
@@ -68,7 +77,7 @@ router.get("/findTask", function (req, res, next) {
   findData().then(result=>{
     res.json({
       code: 1,
-      msg: "注册成功",
+      msg: "查询成功",
       resultList:result
     });
   }).catch(err=>{

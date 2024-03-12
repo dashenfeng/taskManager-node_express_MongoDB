@@ -57,6 +57,16 @@ export function getArticleById (id) {
 
 // ------------新增---------------------
 
+// 注册
+export function getRegister(data) {
+  return request({
+    url: '/users',
+    method: 'POST',
+    data
+  })
+}
+
+
 // 获取任务列表
 export function findInfo() {
   return request({

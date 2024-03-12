@@ -13,16 +13,42 @@ mongoose.connection.on("connected", function () {
   console.log("mongo connect success");
 });
 
-// 定义 channel 的 Schema
-const channelSchema = new Schema({
+// 定义 task 的 Schema
+const taskSchema = new Schema({
   name: { type: String, default: "" },
   classes: { type: Number, default: 0 },
   detail: { type: String, default: "" },
   time: { type: Number, default: 0 },
 });
+// 定义用户信息的Schema（注册时候的用户信息）
+const userInfoSchema = new Schema({
+  address:{type:String,default:''},
+  age:{type:String,default:''},
+  gender:{type:String,default:''},
+  mobile:{type:String,default:''},
+  name:{type:String,default:''},
+  native:{type:String,default:''},  // 籍贯
+  password:{type:String,default:''},
+})
 
-const User = mongoose.model("taskData", channelSchema);
+const User = mongoose.model("taskData", taskSchema); // 这个其实是Task
+const UserInfo = mongoose.model("UserInfo", userInfoSchema); // 这个其实是Task
 
+// ----------------------------用户信息处理----------------------------
+function createUserInfo(newInfoObj) {
+  return new Promise((resolve, reject) => {
+    UserInfo.create(newInfoObj, function (err, doc) {
+      if (!err) {
+        resolve(doc)
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+
+// ----------------------------任务列表处理----------------------------
 // 新增数据
 function createData(newInfoObj) {
   return new Promise((resolve, reject) => {
@@ -52,11 +78,6 @@ function deleteData(id) {
 }
 
 // 修改数据
-function updateData(params) {
-  User.update({ user: "xiaolan1" }, { $set: { age: 26 } }, function (err, doc) {
-    console.log(doc);
-  });
-}
 function updateData() {
   return new Promise((resolve, reject) => {
     User.updateOne({ _id:ObjectId(id)},{ $set: { name: 'asobobibobi' } }, function (err, doc) {
@@ -112,4 +133,4 @@ function findData() {
 //   console.log(doc,'12312312'); // doc传过来的就是一个数组，数组里面是一个个对象
 // });
 
-module.exports = { createData, deleteData, updateData, findData };
+module.exports = { createData, deleteData, updateData, findData,createUserInfo };

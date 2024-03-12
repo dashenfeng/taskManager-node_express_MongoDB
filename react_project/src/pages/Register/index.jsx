@@ -2,6 +2,7 @@ import { Button, Card, Form, Input, message, Select } from "antd";
 import "./index.scss";
 import register from "../../assets/register.png";
 import { useNavigate } from "react-router-dom";
+import { getRegister } from "../../apis/task";
 const Register = () => {
   const {Option }= Select;
   //   使用dispach方法
@@ -9,12 +10,12 @@ const Register = () => {
   const navigate = useNavigate();
   const onRegister = async (values) => {
     console.log(values);
-    //触发异步的action:fetchLogin
-    // await dispatch(fetchLogin(values));
-    //登录之后跳转到首页
+    //发起注册请求
+    getRegister(values)
+    
+    //登录之后跳转到登录页面
     navigate("/login");
-    //提示登录成功的信息
-    message.success("注册成功");
+    message.success("注册成功");//提示登录成功的信息
   };
   return (
     <div className="register">
