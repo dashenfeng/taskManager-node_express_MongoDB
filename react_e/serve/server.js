@@ -154,4 +154,4 @@ function findData() {
 //   console.log(doc,'12312312'); // doc传过来的就是一个数组，数组里面是一个个对象
 // });
 
-module.exports = { createData, deleteData, updateData, findData,createUserInfo };
+module.exports = { createData, deleteData, updateData, findData,createUserInfo,User,UserInfo };
