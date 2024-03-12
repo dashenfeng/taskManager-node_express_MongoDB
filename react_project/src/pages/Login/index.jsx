@@ -17,7 +17,7 @@ const Login = () => {
     //登录之后跳转到首页
     navigate("/");
     //提示登录成功的信息
-    // message.success("登录成功");
+    message.success("登录成功");
   };
   return (
     <div className="login">

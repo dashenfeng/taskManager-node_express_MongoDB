@@ -25,9 +25,22 @@ router.post("/", function (req, res, next) {
 });
 
 /* 登录 */
+
+// 验证密码的函数
+async function checkPassword(password, hash) {
+  try {
+    // 比较用户输入的密码和数据库中的哈希值
+    return await bcrypt.compare(password, hash);
+  } catch (error) {
+    console.error('验证密码时出错:', error);
+    return false;
+  }
+}
+
 let jwt = require("jsonwebtoken");
 router.get("/", function (req, res, next) {
-  console.log(req.query,'query');
+  console.log(req.query,'登录query'); // { username: '15812341234', password: '123456' } 登录query
+  let {username,password} = req.query
   // TODO:
   /* 
     查找对应数据的密码，记得先解密
@@ -48,7 +61,7 @@ router.get("/", function (req, res, next) {
     res.json({
       code: 400,
       msg: "登录失败",
-      token:null
+      token:''
     });
   }
 });
