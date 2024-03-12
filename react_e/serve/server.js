@@ -1,10 +1,9 @@
-/**
- * express Demo
- */
 const express = require("express");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
+
 
 //链接mongo 并且使用task_manager这个集合
 const DB_URL = "mongodb://localhost/task_manager";
@@ -32,12 +31,33 @@ const userInfoSchema = new Schema({
 })
 
 const User = mongoose.model("taskData", taskSchema); // 这个其实是Task
-const UserInfo = mongoose.model("UserInfo", userInfoSchema); // 这个其实是Task
+const UserInfo = mongoose.model("UserInfo", userInfoSchema); // 用户注册信息
 
 // ----------------------------用户信息处理----------------------------
-function createUserInfo(newInfoObj) {
+
+
+// 密码加密的函数
+async function hashPassword(password) {
+  const saltRounds = 10; // 定义加密的复杂度
+  try {
+    // 生成盐并加密
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
+    return hash; // 返回加密后的密码
+  } catch (error) {
+    console.error('加密密码时出错:', error);
+  }
+  return null;
+}
+
+
+async function createUserInfo(newInfoObj) {
+  console.log(newInfoObj.password,'password');
+  let newPassword = await hashPassword(newInfoObj.password).then(result=>result) // 加密密码
+  console.log(newPassword,'newPassword');
+
   return new Promise((resolve, reject) => {
-    UserInfo.create(newInfoObj, function (err, doc) {
+    UserInfo.create({...newInfoObj,password:newPassword}, function (err, doc) {
       if (!err) {
         resolve(doc)
       } else {
@@ -78,7 +98,7 @@ function deleteData(id) {
 }
 
 // 修改数据
-function updateData() {
+function updateData(id) {
   return new Promise((resolve, reject) => {
     User.updateOne({ _id:ObjectId(id)},{ $set: { name: 'asobobibobi' } }, function (err, doc) {
       if (!err) {
