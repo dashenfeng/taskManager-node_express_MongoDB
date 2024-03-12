@@ -70,6 +70,7 @@ async function createUserInfo(newInfoObj) {
 }
 
 // ----------------------------任务列表处理----------------------------
+
 // 新增数据
 function createData(newInfoObj) {
   return new Promise((resolve, reject) => {
@@ -116,7 +117,7 @@ function updateData(data) {
   });
 }
 
-//查询数据
+// 查询数据
 function findData() {
   return new Promise((resolve, reject) => {
     User.find({}, function (err, doc) {
@@ -128,34 +129,6 @@ function findData() {
     });
   });
 }
-
-// 新增数据
-// User.create({
-//     user: 'xiaolan',
-//     age: 18
-// }, function(err, doc){
-//     if(!err){
-//         console.log(doc)
-//     }else{
-//         console.log(err)
-//     }
-// })
-
-//删除数据
-// User.remove({user: 'xiaolan'},function(err, doc){
-//     console.log(doc)
-// })
-
-//更新数据
-// User.update({'user':'xiaolan'},{'$set':{age: 26}}, function(err, doc){
-//     console.log(doc)
-// })
-
-//查询数据
-// User.find({}, function (err, doc) {
-//   // res.json(doc);
-//   console.log(doc,'12312312'); // doc传过来的就是一个数组，数组里面是一个个对象
-// });
 
 module.exports = {
   createData,
