@@ -5,7 +5,7 @@ function setToken (token) {
 }
 
 function getToken () {
-  return localStorage.getItem("TOKENKEY")
+  return localStorage.getItem("token_key")
 }
 
 function removeToken () {

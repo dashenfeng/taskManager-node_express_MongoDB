@@ -7,6 +7,7 @@ import Task from "../pages/Task";
 import Publish from "../pages/Publish";
 import { Suspense } from "react";
 import Register from "../pages/Register";
+import { AuthRoute } from "../components/AuthRoute";
 // const Home = lazy(() => import("../pages/Home"));
 // const Task = lazy(() => import("../pages/Task"));
 // const Publish = lazy(() => import("../pages/Publish"));
@@ -16,8 +17,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Layout />
-
+      <AuthRoute>
+        <Layout />
+      </AuthRoute>
     ),
     children: [
       {
@@ -52,10 +54,8 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path:"/register",
-    element:(
-      <Register/>
-    )
-  }
+    path: "/register",
+    element: <Register />,
+  },
 ]);
 export default router;

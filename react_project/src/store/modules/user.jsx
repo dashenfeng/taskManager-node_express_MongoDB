@@ -8,8 +8,8 @@ const userStore = createSlice({
   name: "user",
   // 数据状态
   initialState: {
-    // token: getToken() || '',
-    token:  '',
+    token: getToken() || '',
+    // token:  '',
     userInfo: {}
   },
   // 同步修改方法
@@ -24,7 +24,7 @@ const userStore = createSlice({
     clearUserInfo (state) {
       state.token = ''
       state.userInfo = {}
-      // removeToken()
+      removeToken()
     }
   }
 })

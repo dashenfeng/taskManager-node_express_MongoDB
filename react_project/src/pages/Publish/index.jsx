@@ -48,7 +48,7 @@ const Publish = () => {
     };
 
     if (articleId) {
-      upData({...reqData,articleId});
+      upData({...reqData,articleId,classes:classes ==="emergency"?2:1});
       console.log(articleId,"更新数据");
     } else {
       submitData();
@@ -121,10 +121,10 @@ const Publish = () => {
           </Form.Item>
           {/* 频道的选择栏 */}
           <Form.Item
-            label="任务分类"
+            label="任务状态"
             name="classes"
-            rules={[{ required: true, message: "请选择任务分类" }]}>
-            <Select placeholder="请选择任务分类" style={{ width: 400 }}>
+            rules={[{ required: true, message: "请选择任务状态" }]}>
+            <Select placeholder="请选择任务状态" style={{ width: 400 }}>
               {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
                   {item.name}

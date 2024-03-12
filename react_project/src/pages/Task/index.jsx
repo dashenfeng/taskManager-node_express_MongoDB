@@ -25,22 +25,33 @@ const Task = () => {
   const { channelList } = useChannel();
   const { RangePicker } = DatePicker;
   const { Option } = Select;
-  const [list, setList] = useState([]); // 任务列表
+  // 筛选功能
+  // 1. 准备参数
+  const [reqData, setReqData] = useState({
+    classes: "",
+    begin_pubdate: "",
+    end_pubdate: "",
+    page: 1,
+    per_page: 4,
+  });
 
+  //获取任务列表
+  const [list, setList] = useState([]); // 任务列表
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await findInfo();
         const { resultList } = res;
-        console.log(res)
-        // console.log(resultList, "taskResultList");
+        // console.log(res);
+        console.log(resultList, "taskResultList");
+        resultList.sort((a, b) => b.time - a.time);
         //时间的格式化
-        const currentList = resultList.map(obj => {
-          // const formattedTime = new Date(obj.time).for();
-          const formattedTime=dayjs(obj.time).format("YYYY年MM月DD日 hh:mm:ss")
-          return { ...obj, time: formattedTime };
+        const currentList = resultList.map((obj) => {
+          const formattedTime = dayjs(obj.time).format("YYYY年MM月DD日");
+          const currentDetail = obj.detail.replace(/<\/?p[^>]*>/gi, "");
+          return { ...obj, time: formattedTime, detail: currentDetail };
         });
-        console.log(currentList,"格式化时间后的列表");
+
         setList(currentList);
       } catch (error) {
         console.log("error in findInfo!!");
@@ -48,6 +59,40 @@ const Task = () => {
     };
     fetchData();
   }, []);
+
+  // 2. 获取筛选数据
+  const onFinish = (formValue) => {
+    console.log(formValue.date[0].format("YYYY年MM月DD日"), "筛选数据");
+    // 3. 把表单收集到数据放到参数中(不可变的方式)
+    setReqData({
+      ...reqData,
+      classes: formValue.classes,
+      begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
+      end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
+    });
+    // console.log(reqData, "依赖项");
+    // 4. 重新拉取文章列表 + 渲染table逻辑重复的 - 复用
+    // reqData依赖项发生变化 重复执行副作用函数
+    // const selectList = list.filter(function (item) {
+    //   return (
+    //     item.classes === reqData.formValue.classes &&
+    //     item.time >= reqData.begin_pubdate &&
+    //     item.time <= reqData.end_pubdate
+    //   );
+    // });
+    // setList(selectList)
+  };
+  console.log(reqData, "依赖项");
+
+  // 分页
+  const onPageChange = (page) => {
+    console.log(page);
+    // 修改参数依赖项 引发数据的重新获取列表渲染
+    setReqData({
+      ...reqData,
+      page,
+    });
+  };
 
   // 删除回调
   const onConfirm = async (data) => {
@@ -62,7 +107,9 @@ const Task = () => {
   //编辑文章的回调
   const onWriteTask = async (data) => {
     // console.log(data.classes, "编辑文章");
-    navigate(`/publish?id=${data._id}&name=${data.name}&detail=${data.detail}&classes=${data.classes}`)
+    navigate(
+      `/publish?id=${data._id}&name=${data.name}&detail=${data.detail}&classes=${data.classes}`
+    );
   };
 
   // 定义状态枚举
@@ -74,7 +121,8 @@ const Task = () => {
     {
       title: "任务名称",
       dataIndex: "name",
-      width: 220,
+      width: 150,
+      ellipsis: true,
     },
     {
       title: "状态",
@@ -85,9 +133,12 @@ const Task = () => {
     {
       title: "提交时间",
       dataIndex: "time",
-    },    {
-      title: "任务详情",
+    },
+    {
+      title: "任务描述",
       dataIndex: "detail",
+      width: 400,
+      ellipsis: true,
     },
     {
       title: "操作",
@@ -98,7 +149,6 @@ const Task = () => {
               type="primary"
               shape="circle"
               icon={<EditOutlined />}
-              // onClick={() => navigate(`/publish?id=${data.id}`)}
               onClick={() => onWriteTask(data)}
             />
             <Popconfirm
@@ -133,19 +183,9 @@ const Task = () => {
           />
         }
         style={{ marginBottom: 20 }}>
-        <Form
-          initialValues={{ status: "" }}
-          // onFinish={onFinish}
-        >
-          <Form.Item label="状态" name="status">
-            <Radio.Group>
-              <Radio value={""}>全部</Radio>
-              <Radio value={1}>正常</Radio>
-              <Radio value={2}>紧急</Radio>
-            </Radio.Group>
-          </Form.Item>
-
-          <Form.Item label="分类" name="channel_id">
+        {/* 筛选区域 */}
+        <Form onFinish={onFinish}>
+          <Form.Item label="状态" name="classes">
             <Select placeholder="请选择任务分类" style={{ width: 120 }}>
               {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
@@ -159,7 +199,6 @@ const Task = () => {
             {/* 传入locale属性 控制中文显示*/}
             <RangePicker locale={locale}></RangePicker>
           </Form.Item>
-
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ marginLeft: 40 }}>
               筛选
@@ -169,16 +208,16 @@ const Task = () => {
       </Card>
       {/* 表格区域 */}
       {/* <Card title={`根据筛选条件共查询到 ${count} 条结果：`}> */}
-      <Card title={`根据筛选条件共查询到 ${1} 条结果：`}>
+      <Card title={`根据筛选条件共查询到 ${list.length} 条结果：`}>
         <Table
           rowKey="_id"
           columns={columns}
           dataSource={list}
-          // pagination={{
-          //   total: count,
-          //   pageSize: reqData.per_page,
-          //   onChange: onPageChange,
-          // }}
+          pagination={{
+            total: list.length,
+            pageSize: reqData.per_page,
+            onChange: onPageChange,
+          }}
         />
       </Card>
     </div>
