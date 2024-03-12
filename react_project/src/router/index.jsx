@@ -8,9 +8,7 @@ import Publish from "../pages/Publish";
 import { Suspense } from "react";
 import Register from "../pages/Register";
 import { AuthRoute } from "../components/AuthRoute";
-// const Home = lazy(() => import("../pages/Home"));
-// const Task = lazy(() => import("../pages/Task"));
-// const Publish = lazy(() => import("../pages/Publish"));
+import { LoginRoute } from "../components/LoginRoute";
 
 //路由实例
 const router = createBrowserRouter([
@@ -47,14 +45,18 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: (
-      <Suspense fallback={"加载中"}>
+      <LoginRoute>
         <Login />
-      </Suspense>
+      </LoginRoute>
     ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <LoginRoute>
+        <Register />
+      </LoginRoute>
+    ),
   },
 ]);
 export default router;
