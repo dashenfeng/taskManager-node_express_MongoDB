@@ -8,6 +8,8 @@ import Publish from "../pages/Publish";
 import { Suspense } from "react";
 import Register from "../pages/Register";
 import { AuthRoute } from "../components/AuthRoute";
+import { LoginRoute } from "../components/LoginRoute";
+
 //路由实例
 const router = createBrowserRouter([
   {
@@ -57,11 +59,5 @@ const router = createBrowserRouter([
     ),
   },
 ]);
-// const isUserLoggedIn = "false";
-// router.listen((location) => {
-//   if (location.pathname === "/login" && isUserLoggedIn()) {
-//     history.push("/"); // 用户尝试访问登录页面但已登录，重定向到主页
-//     console.log("用户已经登陆");
-//   }
-// });
+
 export default router;

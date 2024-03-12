@@ -119,7 +119,8 @@ const Publish = () => {
           <Form.Item
             label="任务状态"
             name="classes"
-            rules={[{ required: true, message: "请选择任务状态" }]}>
+            // rules={[{ required: true, message: "请选择任务状态" }]}
+            >
             <Select placeholder="请选择任务状态" style={{ width: 400 }}>
               {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>

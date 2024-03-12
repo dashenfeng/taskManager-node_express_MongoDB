@@ -96,7 +96,7 @@ router.get("/channels", function (req, res, next) {
   const data = [
     {
       id: '',
-      name: "all",
+      name: "any",
     },
     {
       id: 1,

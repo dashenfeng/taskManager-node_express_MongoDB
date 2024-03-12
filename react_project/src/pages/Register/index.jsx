@@ -85,10 +85,6 @@ const Register = () => {
                 required: true,
                 message: "请输入年龄",
               },
-              {
-                type: "number",
-                message: "年龄必须为数字类型",
-              },
             ]}>
             <Input placeholder="请输入年龄"></Input>
           </Form.Item>
