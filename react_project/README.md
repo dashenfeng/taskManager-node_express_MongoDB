@@ -1,8 +1,13 @@
-# React + Vite
+# 任务管理系统
+（应成峰、万逸合作开发）
+## 视频演示
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 页面功能介绍
+### 1.登录页面
+* 登录页面采用绿色系的背景图，有春和景明的意象，满满的生机勃勃。
+* 系统名称为朴素的“任务管理系统”，logo精心设计，绿色和淡黄的色调，和背景相得益彰
+* 已经注册的用户可以根据手机号和密码登录系统，手机号和密码均有表单验证，符合手机号和密码（字母+数字，且六位数字以上）的格式要求；
+* 没有注册的用户无法进入系统，会提示“请注册账号”。
+* 没有注册的用户根据自己的内心意愿，可以选择注册成为新用户，点击登录下* 方的“没有账号？免费注册”，进入注册页面；同时也可以选择关闭浏览器，当做没有来过。
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 2.注册页面

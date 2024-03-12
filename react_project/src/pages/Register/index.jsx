@@ -43,11 +43,15 @@ const Register = () => {
             rules={[
               {
                 required: true,
-                message: "请输入密码",
+                message: "请设置密码",
               },
+              // {
+                //   pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+                //   message: "请输入正确的密码格式（字母数字组合，六位以上）！",
+                // }
             ]}
             hasFeedback>
-            <Input.Password placeholder="请输入密码" />
+            <Input.Password placeholder="请设置密码" />
           </Form.Item>
           <Form.Item
             name="confirm"
@@ -68,7 +72,7 @@ const Register = () => {
                 },
               }),
             ]}>
-            <Input.Password placeholder="请输入密码" />
+            <Input.Password placeholder="请验证你的密码" />
           </Form.Item>
           <Form.Item
             label="年龄"
