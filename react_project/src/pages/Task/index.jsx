@@ -75,8 +75,6 @@ const Task = () => {
       setReqData({
         ...reqData,
         classes: formValue.classes,
-        // begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
-        // end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
       });
     }
   };

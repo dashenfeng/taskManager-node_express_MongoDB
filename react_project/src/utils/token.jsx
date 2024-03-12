@@ -12,7 +12,7 @@ function removeToken() {
   return localStorage.removeItem("token_key");
 }
 function setUserInfo(userInfo) {
-  return localStorage.setItem("user_id", JSON.stringify(userInfo));
+  return localStorage.setItem("user_id", JSON.stringify(userInfo) || '');
 }
 
 function getUserInfo() {
