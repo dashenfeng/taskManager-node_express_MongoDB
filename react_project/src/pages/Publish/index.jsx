@@ -48,8 +48,8 @@ const Publish = () => {
     };
 
     if (articleId) {
-      upData({...reqData,articleId});
-      console.log(articleId, "更新数据");
+      upData();
+      console.log(articleId,"更新数据");
     } else {
       submitData();
       console.log(reqData);
