@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const dayjs = require("dayjs");
 let {
   createData,
   deleteData,
@@ -34,15 +35,10 @@ router.post("/", function (req, res, next) {
 });
 
 /* 登录 */
-
 let jwt = require("jsonwebtoken");
 router.get("/", function (req, res, next) {
   console.log(req.query, "登录query"); // { username: '15812341234', password: '123456' } 登录query
   let { username, password } = req.query;
-  /* 
-    查找对应数据的密码，记得先解密
-    加上token
-  */
   async function login(username, password) {
     try {
       // 查找用户信息
@@ -53,7 +49,7 @@ router.get("/", function (req, res, next) {
         res.json({
           code: 400,
           msg: "用户不存在",
-          token:''
+          token: "",
         });
         throw new Error("用户不存在");
       }
@@ -64,7 +60,7 @@ router.get("/", function (req, res, next) {
         res.json({
           code: 400,
           msg: "账号或密码错误",
-          token:''
+          token: "",
         });
         throw new Error("密码不匹配");
       }
@@ -85,7 +81,7 @@ router.get("/", function (req, res, next) {
         code: 200,
         msg: "登录成功",
         token,
-        userInfo:thisUserInfo
+        userInfo: thisUserInfo,
       });
     } catch (error) {
       throw new Error("登录失败: " + error.message);
@@ -96,7 +92,7 @@ router.get("/", function (req, res, next) {
 
 // 获取任务分类
 router.get("/channels", function (req, res, next) {
-  // console.log(req.body);
+  console.log(req.body);
   const data = [
     {
       id: 1,
@@ -108,7 +104,7 @@ router.get("/channels", function (req, res, next) {
     },
   ];
   res.json({
-    code: 1,
+    code: 200,
     msg: "获取任务分类成功",
     channels: data,
   });
@@ -116,14 +112,38 @@ router.get("/channels", function (req, res, next) {
 
 // 查询任务列表
 router.get("/findTask", function (req, res, next) {
-  // console.log(req.body);
+  console.log(req.query, "findTask_req.body");
+  let { classes, begin_pubdate, end_pubdate } = req.query;
+  let resArr = [];
 
-  findData()
+  findData(req.query)
     .then((result) => {
+      if (classes && begin_pubdate && end_pubdate) {
+        resArr = result.filter(
+          (task) =>
+            task.classes == classes &&
+            begin_pubdate < dayjs(task.time).format("YYYY年MM月DD日") &&
+            end_pubdate > dayjs(task.time).format("YYYY年MM月DD日")
+        );
+      } else if (classes) {
+        console.log(classes, typeof classes, "classes");
+        resArr = result.filter((task) => task.classes == classes);
+      } else if (begin_pubdate && end_pubdate) {
+        resArr = result.filter(
+          (task) =>
+            begin_pubdate < dayjs(task.time).format("YYYY年MM月DD日") &&
+            end_pubdate > dayjs(task.time).format("YYYY年MM月DD日")
+        );
+      }else{
+        resArr = result
+      }
+
+      // console.log(resArr,'resArr');
+      console.log(`共筛选到${resArr.length}条数据`);
       res.json({
         code: 200,
         msg: "查询成功",
-        resultList: result,
+        resultList: resArr,
       });
     })
     .catch((err) => {
