@@ -18,12 +18,12 @@ const Login = () => {
     const token = getToken();
     if (token) {
       message.success("登录成功");
-      navigate("/");
+     navigate('/')
+    // return <Redirect to="/" />
     }else{
       message.warning("请注册账号");
     }
-    //提示登录成功的信息
-    //
+
   };
   return (
     <div className="login">
