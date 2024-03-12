@@ -44,17 +44,19 @@ const fetchLogin = (data) => {
     const res = await getLogin(data) // 发起登录请求
     console.log(res.token,"登录请求返回结果")
     dispatch(setToken(res.token))
+    console.log(res.userInfo,"登录用户信息")
+    dispatch(setUserInfo(res.userInfo))
   }
 }
 
-// 获取个人用户信息异步方法
-const fetchUserInfo = () => {
-  return async (dispatch) => {
-    const res = await getProfileAPI()
-    dispatch(setUserInfo(res.data))
-  }
-}
+// // 获取个人用户信息异步方法
+// const fetchUserInfo = () => {
+//   return async (dispatch) => {
+//     const res = await getProfileAPI()
+//     dispatch(setUserInfo(res.data))
+//   }
+// }
 
-export { fetchLogin, fetchUserInfo, clearUserInfo }
+export { fetchLogin, clearUserInfo }
 
 export default userReducer
