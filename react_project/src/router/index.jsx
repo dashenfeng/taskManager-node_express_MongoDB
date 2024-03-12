@@ -8,21 +8,6 @@ import Publish from "../pages/Publish";
 import { Suspense } from "react";
 import Register from "../pages/Register";
 import { AuthRoute } from "../components/AuthRoute";
-// const Home = lazy(() => import("../pages/Home"));
-// const Task = lazy(() => import("../pages/Task"));
-// const Publish = lazy(() => import("../pages/Publish"));
-
-// 假设有一个isUserLoggedIn函数用来检查用户是否已经登录
-// const isUserLoggedIn = () => {
-//   // 这里应该是你的逻辑来检查用户是否已经登录
-//   if(token){
-//     return true
-//   }else{
-//     return false
-//   }
-// 返回 true 如果用户已经登录，否则返回 false
-// };
-
 //路由实例
 const router = createBrowserRouter([
   {

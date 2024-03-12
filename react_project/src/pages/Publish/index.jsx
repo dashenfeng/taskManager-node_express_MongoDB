@@ -13,13 +13,12 @@ import "react-quill/dist/quill.snow.css";
 import "./index.scss";
 import {
   Link,
-  useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
 import { useChannel } from "../../hooks/useChannel";
 import { addTask, updateTask } from "../../apis/task";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 const Publish = () => {
   const { Option } = Select;
   const { channelList } = useChannel();
@@ -27,7 +26,7 @@ const Publish = () => {
   
   // 提交表单
   const onFinish = (formValue) => {
-    console.log(formValue, "formValue");
+    // console.log(formValue, "formValue");
     const { name, classes, detail } = formValue;
     const reqData = {
       name,
@@ -42,17 +41,17 @@ const Publish = () => {
       return res;
     };
     const upData = async (data) => {
-      console.log(data,"传入的参数");
+      // console.log(data,"传入的参数");
       const res = await updateTask(data);
       return res;
     };
 
     if (articleId) {
       upData({...reqData,articleId,classes:classes ==="emergency"?2:1});
-      console.log(articleId,"更新数据");
+      // console.log(articleId,"更新数据");
     } else {
       submitData();
-      console.log(reqData);
+      // console.log(reqData);
     }
     message.success("提交成功");
     navigate("/task");
@@ -65,10 +64,7 @@ const Publish = () => {
   const name = searchParams.get("name");
   const detail = searchParams.get("detail");
   const classes = searchParams.get("classes") == 1 ? "normal" : "emergency";
-  // const classes = searchParams.get("classes");
 
-  // console.log(articleId, "111111111111111111111");
-  // console.log(name, "2222222222222");
   // 获取实例
   const [form] = Form.useForm();
   useEffect(() => {

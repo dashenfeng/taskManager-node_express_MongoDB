@@ -95,6 +95,10 @@ router.get("/channels", function (req, res, next) {
   console.log(req.body);
   const data = [
     {
+      id: '',
+      name: "all",
+    },
+    {
       id: 1,
       name: "normal",
     },
@@ -122,8 +126,8 @@ router.get("/findTask", function (req, res, next) {
         resArr = result.filter(
           (task) =>
             task.classes == classes &&
-            begin_pubdate < dayjs(task.time).format("YYYY年MM月DD日") &&
-            end_pubdate > dayjs(task.time).format("YYYY年MM月DD日")
+            begin_pubdate <= dayjs(task.time).format("YYYY年MM月DD日") &&
+            end_pubdate >= dayjs(task.time).format("YYYY年MM月DD日")
         );
       } else if (classes) {
         console.log(classes, typeof classes, "classes");
@@ -131,8 +135,8 @@ router.get("/findTask", function (req, res, next) {
       } else if (begin_pubdate && end_pubdate) {
         resArr = result.filter(
           (task) =>
-            begin_pubdate < dayjs(task.time).format("YYYY年MM月DD日") &&
-            end_pubdate > dayjs(task.time).format("YYYY年MM月DD日")
+            begin_pubdate <= dayjs(task.time).format("YYYY年MM月DD日") &&
+            end_pubdate >= dayjs(task.time).format("YYYY年MM月DD日")
         );
       }else{
         resArr = result

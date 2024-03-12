@@ -54,10 +54,10 @@ const Login = () => {
                 required: true,
                 message: "请输入密码",
               },
-              // {
-              //   pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
-              //   message: "请输入正确的密码格式（字母数字组合，六位以上）！",
-              // }
+              {
+                pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+                message: "请输入正确的密码格式（字母数字组合，六位以上）！",
+              }
             ]}
             hasFeedback>
             <Input.Password size="large" placeholder="请输入密码" />

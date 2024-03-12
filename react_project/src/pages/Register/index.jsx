@@ -4,18 +4,17 @@ import register from "../../assets/register.png";
 import { useNavigate } from "react-router-dom";
 import { getRegister } from "../../apis/task";
 const Register = () => {
-  const {Option }= Select;
+  const { Option } = Select;
   //   使用dispach方法
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   const onRegister = async (values) => {
     console.log(values);
     //发起注册请求
-    getRegister(values)
-    
+    getRegister(values);
     //登录之后跳转到登录页面
     navigate("/login");
-    message.success("注册成功");//提示登录成功的信息
+    message.success("注册成功"); //提示登录成功的信息
   };
   return (
     <div className="register">
@@ -23,7 +22,6 @@ const Register = () => {
         <img className="register-logo" src={register} alt="" />
         {/* 登录表单 */}
         <Form onFinish={onRegister} validateTrigger="onBlur">
-          {/* <Form validateTrigger="onBlur"> */}
           {/* 姓名 */}
           <Form.Item
             label="姓名"
@@ -34,7 +32,7 @@ const Register = () => {
                 message: "请输入姓名",
               },
             ]}>
-            <Input  placeholder="请输入姓名"></Input>
+            <Input placeholder="请输入姓名"></Input>
           </Form.Item>
           {/* 密码 */}
           <Form.Item
@@ -45,23 +43,28 @@ const Register = () => {
                 required: true,
                 message: "请设置密码",
               },
-              // {
-                //   pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
-                //   message: "请输入正确的密码格式（字母数字组合，六位以上）！",
-                // }
+              {
+                pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+                message: "请输入正确的密码格式（字母数字组合，六位以上）！",
+              }
+              
             ]}
             hasFeedback>
             <Input.Password placeholder="请设置密码" />
           </Form.Item>
           <Form.Item
             name="confirm"
-            label="验证密码"
+            label="确认密码"
             dependencies={["password"]}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: "请验证你的密码",
+                message: "请确认你的密码",
+              },
+              {
+                pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+                message: "请输入正确的密码格式（字母数字组合，六位以上）！",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -72,7 +75,7 @@ const Register = () => {
                 },
               }),
             ]}>
-            <Input.Password placeholder="请验证你的密码" />
+            <Input.Password placeholder="请确认你的密码" />
           </Form.Item>
           <Form.Item
             label="年龄"
@@ -82,8 +85,12 @@ const Register = () => {
                 required: true,
                 message: "请输入年龄",
               },
+              {
+                type: "number",
+                message: "年龄必须为数字类型",
+              },
             ]}>
-            <Input  placeholder="请输入年龄"></Input>
+            <Input placeholder="请输入年龄"></Input>
           </Form.Item>
           {/* 籍贯 */}
           <Form.Item
@@ -95,10 +102,9 @@ const Register = () => {
                 message: "请输入籍贯",
               },
             ]}>
-            <Input  placeholder="请输入籍贯"></Input>
+            <Input placeholder="请输入籍贯"></Input>
           </Form.Item>
           {/* 性别 */}
-
           <Form.Item
             label="性别"
             name="gender"
@@ -117,7 +123,7 @@ const Register = () => {
           <Form.Item
             label="联系方式"
             name="mobile"
-            //规则按照顺序执行，等到所有的满足规则，才ok
+
             rules={[
               {
                 required: true,
@@ -128,7 +134,7 @@ const Register = () => {
                 message: "请输入正确的手机号格式！",
               },
             ]}>
-            <Input  placeholder="请输入手机号"></Input>
+            <Input placeholder="请输入手机号"></Input>
           </Form.Item>
           {/* 联系地址 */}
           <Form.Item
@@ -140,10 +146,10 @@ const Register = () => {
                 message: "请输入联系地址",
               },
             ]}>
-            <Input  placeholder="请输入联系地址"></Input>
+            <Input placeholder="请输入联系地址"></Input>
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit"  block>
+            <Button type="primary" htmlType="submit" block>
               注册
             </Button>
           </Form.Item>

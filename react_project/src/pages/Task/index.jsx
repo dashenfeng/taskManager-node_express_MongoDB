@@ -4,7 +4,6 @@ import {
   Breadcrumb,
   Form,
   Button,
-  Radio,
   DatePicker,
   Select,
   Table,
@@ -16,7 +15,7 @@ import {
 import locale from "antd/es/date-picker/locale/zh_CN";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { useChannel } from "../../hooks/useChannel";
-import { deleteTask, findInfo, updateTask } from "../../apis/task";
+import { deleteTask, findInfo } from "../../apis/task";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
@@ -40,12 +39,11 @@ const Task = () => {
   useEffect(() => {
     const fetchData = async (limitObj) => {
       try {
-        // const {classes,begin_pubdate,end_pubdate} = limitObj
         // console.log(classes,begin_pubdate,end_pubdate,'classes,begin_pubdate,end_pubdate');
         const res = await findInfo(limitObj);
         const { resultList } = res;
         // console.log(res);
-        console.log(resultList, "taskResultList");
+        // console.log(resultList, "taskResultList");
         resultList.sort((a, b) => b.time - a.time);
         //时间的格式化
         const currentList = resultList.map((obj) => {
@@ -81,24 +79,11 @@ const Task = () => {
         // end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
       });
     }
-    
-    // console.log(reqData, "依赖项");
-    // 4. 重新拉取文章列表 + 渲染table逻辑重复的 - 复用
-    // reqData依赖项发生变化 重复执行副作用函数
-    // const selectList = list.filter(function (item) {
-    //   return (
-    //     item.classes === reqData.formValue.classes &&
-    //     item.time >= reqData.begin_pubdate &&
-    //     item.time <= reqData.end_pubdate
-    //   );
-    // });
-    // setList(selectList)
   };
-  console.log(reqData, "依赖项");
 
   // 分页
   const onPageChange = (page) => {
-    console.log(page);
+    // console.log(page);
     // 修改参数依赖项 引发数据的重新获取列表渲染
     setReqData({
       ...reqData,
@@ -108,7 +93,7 @@ const Task = () => {
 
   // 删除回调
   const onConfirm = async (data) => {
-    console.log(data, "deleteData");
+    // console.log(data, "deleteData");
     await deleteTask(data._id); // 这个接口里面是_id而不是id
     // 创建一个新的任务数组，排除被删除的任务
     const updatedList = list.filter((item) => item._id !== data._id);
@@ -183,8 +168,6 @@ const Task = () => {
   ];
   return (
     <div>
-      {/* {list.length && <div>{list[0]['name']}</div>} */}
-      {/* 测试代码 */}
       <Card
         title={
           <Breadcrumb
@@ -219,7 +202,6 @@ const Task = () => {
         </Form>
       </Card>
       {/* 表格区域 */}
-      {/* <Card title={`根据筛选条件共查询到 ${count} 条结果：`}> */}
       <Card title={`根据筛选条件共查询到 ${list.length} 条结果：`}>
         <Table
           rowKey="_id"

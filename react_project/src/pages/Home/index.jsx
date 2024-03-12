@@ -5,19 +5,11 @@ import { useSelector } from "react-redux";
 const Home = () => {
   const date=dayjs(new Date()).format('YYYY年MM月DD日')
   const {userInfo}=useSelector(state=>state.user)
-  
-  // const userInfo={
-  //   name:"ww",
-  //   age:"18",
-  //   native:'江苏宿迁',
-  //   gender:"female",
-  //   mobile:'15651272069',
-  //   address:"上海市"
-  // }
+  // console.log(userInfo);
   return (
     <div >
       <Card  >
-        <div style={{color:'orange',textAlign:'center',fontSize:'30px',fontWeight:'bold'}}>
+        <div style={{color:'red',textAlign:'center',fontSize:'30px',fontWeight:'bold'}}>
         欢迎努力的你！
         </div>
       <h3>个人中心</h3>

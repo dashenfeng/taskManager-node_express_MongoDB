@@ -2,11 +2,14 @@
 // import {request} from '@/utils'
 
 import { request } from './request'
-import { setToken, getToken, removeToken } from './token'
+import { setToken, getToken, removeToken ,getUserInfo,  removeUserInfo,
+  setUserInfo,} from './token'
 
 export {
   request,
   setToken,
   getToken,
-  removeToken
+  removeToken,getUserInfo,
+  removeUserInfo,
+  setUserInfo,
 }
