@@ -27,6 +27,14 @@ const userInfoSchema = new Schema({
   name: { type: String, default: "" },
   native: { type: String, default: "" }, // 籍贯
   password: { type: String, default: "" },
+  isAdmin: { type: Boolean, default: false },
+  // authority: { type: Object },
+  isAdd: { type: Boolean, default: false },
+  isDelete: { type: Boolean, default: false },
+  isEdit: { type: Boolean, default: false },
+  isFind: { type: Boolean, default: false },
+  createDate: { type: Number },
+  isBlocked: { type: Boolean, default: false },
 });
 
 const User = mongoose.model("taskData", taskSchema); // 这个其实是Task
@@ -56,6 +64,7 @@ async function createUserInfo(newInfoObj) {
   console.log(newPassword, "newPassword");
 
   return new Promise((resolve, reject) => {
+    // 创建新的UserInfo
     UserInfo.create(
       { ...newInfoObj, password: newPassword },
       function (err, doc) {
@@ -87,7 +96,6 @@ function createData(newInfoObj) {
 
 // 删除数据
 function deleteData(id) {
-  console.log(typeof id, "id998");
   return new Promise((resolve, reject) => {
     User.deleteOne({ _id: ObjectId(id) }, function (err, doc) {
       if (!err) {
@@ -130,12 +138,61 @@ function findData() {
   });
 }
 
+// ----------------------------用户处理----------------------------
+
+// 查询用户信息
+function findUserInfoData() {
+  return new Promise((resolve, reject) => {
+    UserInfo.find({}, function (err, doc) {
+      if (!err) {
+        resolve(doc);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+// 修改用户权限
+function updateUserAuth(data) {
+  const { _id, name, isAdd, isDelete, isEdit, isFind, state } = data;
+  return new Promise((resolve, reject) => {
+    UserInfo.updateOne(
+      { _id: ObjectId(_id) },
+      { $set: { name, isAdd, isDelete, isEdit, isFind, isBlocked: state } },
+      function (err, doc) {
+        if (!err) {
+          resolve(doc);
+        } else {
+          reject(err);
+        }
+      }
+    );
+  });
+}
+
+// 删除用户
+function deleteUser(id) {
+  return new Promise((resolve, reject) => {
+    UserInfo.deleteOne({ _id: ObjectId(id) }, function (err, doc) {
+      if (!err) {
+        resolve(doc);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
 module.exports = {
   createData,
   deleteData,
   updateData,
   findData,
   createUserInfo,
+  findUserInfoData,
+  updateUserAuth,
+  deleteUser,
   User,
   UserInfo,
 };

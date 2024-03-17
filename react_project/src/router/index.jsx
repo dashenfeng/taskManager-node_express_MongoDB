@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Task from "../pages/Task";
 import Publish from "../pages/Publish";
+import Authorization from "../pages/Authorization";
 import { Suspense } from "react";
 import Register from "../pages/Register";
 import { AuthRoute } from "../components/AuthRoute";
@@ -40,6 +41,13 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path:"authorization",
+        element:(
+          <Authorization/>
+        )
+
+      }
     ],
   },
   {

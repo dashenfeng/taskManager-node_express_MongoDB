@@ -2,6 +2,7 @@ import { Layout, Menu, Popconfirm } from "antd";
 import {
   HomeOutlined,
   DiffOutlined,
+  UserOutlined,
   EditOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
@@ -12,7 +13,7 @@ import { clearUserInfo } from "../../store/modules/user";
 
 const { Header, Sider } = Layout;
 
-// 左侧边栏要显示的三个东西
+// 左侧边栏要显示的东西
 const items = [
   {
     label: "首页",
@@ -29,21 +30,23 @@ const items = [
     key: "/task",
     icon: <DiffOutlined />,
   },
+  {
+    label: "权限管理",
+    key: "/Authorization",
+    icon: <UserOutlined />,
+    ishidden: 1,
+  },
 ];
 
 const GeekLayout = () => {
-  // 测试结束↑
   const navigate = useNavigate();
-  // 跳转到对应路由
   const onMenuClick = (route) => {
-    // console.log("菜单被点击了", route);
     const path = route.key;
-    navigate(path);
+    navigate(path); // 跳转到对应路由
   };
 
-  // // 反向高亮
-  // 1. 获取当前路由路径
-  const location = useLocation();
+  // 反向高亮
+  const location = useLocation(); // 获取当前路由路径
   console.log(location.pathname);
   const selectedkey = location.pathname;
 
@@ -56,6 +59,17 @@ const GeekLayout = () => {
   };
 
   const name = useSelector((state) => state.user.userInfo.name);
+
+  // 对菜单列表进行二次筛选
+  let { isAdmin } = JSON.parse(localStorage.getItem("user_id"));
+  let lastItem;
+  if (!isAdmin) {
+    lastItem = items.filter((obj) => !("ishidden" in obj));
+  }else{
+    lastItem = items
+  }
+  // console.log(lastItem,'lastItem');
+
   return (
     <Layout>
       <Header className="header">
@@ -80,7 +94,7 @@ const GeekLayout = () => {
             theme="dark"
             onClick={onMenuClick}
             selectedKeys={selectedkey}
-            items={items}
+            items={lastItem}
             style={{ height: "100%", borderRight: 0 }}></Menu>
         </Sider>
         <Layout className="layout-content" style={{ padding: 20 }}>

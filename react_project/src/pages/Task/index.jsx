@@ -71,7 +71,7 @@ const Task = () => {
         begin_pubdate: formValue.date[0].format("YYYY年MM月DD日"),
         end_pubdate: formValue.date[1].format("YYYY年MM月DD日"),
       });
-    }else{
+    } else {
       setReqData({
         ...reqData,
         classes: formValue.classes,
@@ -138,15 +138,20 @@ const Task = () => {
     {
       title: "操作",
       render: (data) => {
+        let { isAdmin, isAdd, isDelete, isEdit, isFind, isBlocked } = JSON.parse(
+          localStorage.getItem("user_id")
+        ); // 登录的这个用户的信息
         return (
           <Space size="middle">
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<EditOutlined />}
-              onClick={() => onWriteTask(data)}
-            />
-            <Popconfirm
+            {isEdit && !isBlocked && (
+              <Button
+                type="primary"
+                shape="circle"
+                icon={<EditOutlined />}
+                onClick={() => onWriteTask(data)}
+              />
+            )}
+            {isDelete && !isBlocked && (<Popconfirm
               title="删除文章"
               description="确认要删除当前文章吗?"
               onConfirm={() => onConfirm(data)}
@@ -158,7 +163,7 @@ const Task = () => {
                 shape="circle"
                 icon={<DeleteOutlined />}
               />
-            </Popconfirm>
+            </Popconfirm>)}
           </Space>
         );
       },

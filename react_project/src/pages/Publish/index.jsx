@@ -11,19 +11,15 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./index.scss";
-import {
-  Link,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useChannel } from "../../hooks/useChannel";
 import { addTask, updateTask } from "../../apis/task";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const Publish = () => {
   const { Option } = Select;
   const { channelList } = useChannel();
   const navigate = useNavigate();
-  
+
   // 提交表单
   const onFinish = (formValue) => {
     // console.log(formValue, "formValue");
@@ -47,7 +43,11 @@ const Publish = () => {
     };
 
     if (articleId) {
-      upData({...reqData,articleId,classes:classes ==="emergency"?2:1});
+      upData({
+        ...reqData,
+        articleId,
+        classes: classes === "emergency" ? 2 : 1,
+      });
       // console.log(articleId,"更新数据");
     } else {
       submitData();
@@ -67,8 +67,13 @@ const Publish = () => {
 
   // 获取实例
   const [form] = Form.useForm();
+  const [auth, setAuth] = useState({});
   useEffect(() => {
-    // 1. 通过id获取数据
+    let { isAdmin, isAdd, isDelete, isEdit, isFind, isBlocked } = JSON.parse(
+      localStorage.getItem("user_id")
+    ); // 登录的这个用户的信息
+    setAuth({ isAdmin, isAdd, isDelete, isEdit, isFind, isBlocked });
+
     async function getArticleDetail() {
       const data = {
         name,
@@ -76,7 +81,7 @@ const Publish = () => {
         detail,
         articleId,
       };
-  
+
       form.setFieldsValue({
         ...data,
       });
@@ -120,7 +125,7 @@ const Publish = () => {
             label="任务状态"
             name="classes"
             // rules={[{ required: true, message: "请选择任务状态" }]}
-            >
+          >
             <Select placeholder="请选择任务状态" style={{ width: 400 }}>
               {channelList.map((item) => (
                 <Option key={item.id} value={item.id}>
@@ -144,9 +149,16 @@ const Publish = () => {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
-              <Button size="large" type="primary" htmlType="submit">
-                提交任务
-              </Button>
+              {auth.isAdd && !auth.isBlocked && (
+                <Button size="large" type="primary" htmlType="submit">
+                  提交任务
+                </Button>
+              )}
+              {(!auth.isAdd || auth.isBlocked) && (
+                <Button size="large" type="primary" htmlType="submit" disabled>
+                  联系管理员开通权限
+                </Button>
+              )}
             </Space>
           </Form.Item>
         </Form>

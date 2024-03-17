@@ -67,7 +67,7 @@ export function getRegister(data) {
 }
 
 
-// 获取任务列表
+// 获取任务列表 limitObj为筛选的条件信息
 export function findInfo(limitObj) {
   return request({
     url: '/users/findTask',
@@ -94,12 +94,43 @@ export function deleteTask(taskId) {
   })
 }
 
-// 更新任务  ---还未测试
+// 更新任务
 export function updateTask(data) {
   console.log(data,'更新数据的data');
   return request({
     url: '/users/updateTask',
     method: 'PUT',
     data
+  })
+}
+
+// 获取用户信息，用来权限管理
+// 获取任务列表
+export function findUserInfo() {
+  return request({
+    url: '/users/findUserInfo',
+    method: 'GET',
+  })
+}
+
+
+
+// 更新任务
+export function updateUserAuth(data) {
+  console.log(data,'更新用户权限的data');
+  return request({
+    url: '/users/updateUserAuth',
+    method: 'PUT',
+    data
+  })
+}
+
+
+// 删除用户  不知道为什么删不掉
+export function deleteUser(_id) {
+  return request({
+    url: '/users/deleteUser',
+    method: 'DELETE',
+    data: {_id}
   })
 }

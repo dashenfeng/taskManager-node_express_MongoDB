@@ -7,6 +7,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { getToken } from "../../utils/token";
 
 const Login = () => {
+  // 设置 cookie
+  function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
   //   使用dispach方法1
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,12 +28,13 @@ const Login = () => {
     const token = getToken();
     if (token) {
       message.success("登录成功");
-     navigate('/')
-    // return <Redirect to="/" />
-    }else{
+      // 假设设置一个名为 'loggedIn' 的 cookie，值为 'true'，有效期为 1 天
+      setCookie("loggedIn", "true", 1);
+      navigate("/");
+      // return <Redirect to="/" />
+    } else {
       message.warning("请注册账号");
     }
-
   };
   return (
     <div className="login">
@@ -55,9 +66,9 @@ const Login = () => {
                 message: "请输入密码",
               },
               {
-                pattern:/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
+                pattern: /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/,
                 message: "请输入正确的密码格式（字母数字组合，六位以上）！",
-              }
+              },
             ]}
             hasFeedback>
             <Input.Password size="large" placeholder="请输入密码" />

@@ -39,7 +39,8 @@ request.interceptors.response.use((response) => {
   console.dir(error)
   if (error.response.status === 401) {
     removeToken()
-    // router.navigate('/login')
+    console.log('token已过期,重新登录');
+    router.navigate('/login')
     // window.location.reload()
   }
   return Promise.reject(error)

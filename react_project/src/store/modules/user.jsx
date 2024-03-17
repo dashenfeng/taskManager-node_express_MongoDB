@@ -47,11 +47,13 @@ const userReducer = userStore.reducer;
 
 // 登录获取token异步方法封装
 const fetchLogin = (data) => {
+  // 这里的data传过来的是账号和密码
   return async (dispatch) => {
     const res = await getLogin(data); // 发起登录请求
     console.log(res.token, "登录请求返回结果");
     dispatch(setToken(res.token));
     console.log(res.userInfo, "登录用户信息");
+    console.log(res,'所有返回信息');
     dispatch(setUserInfo(res.userInfo));
   };
 };
