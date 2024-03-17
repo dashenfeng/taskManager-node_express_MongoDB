@@ -79,7 +79,7 @@ router.get("/", function (req, res, next) {
   async function login(username, password) {
     try {
       // 查找用户信息
-      const thisUserInfo = await UserInfo.findOne({ mobile: username }); // 假设用户名存储在 mobile 字段中
+      let thisUserInfo = await UserInfo.findOne({ mobile: username }); // 假设用户名存储在 mobile 字段中
       console.log(thisUserInfo, "找到了没呀");
       // 查找是否有该用户
       if (!thisUserInfo) {
@@ -108,7 +108,9 @@ router.get("/", function (req, res, next) {
           { _id: thisUserInfo._id },
           { $set: { isAdd: true, isDelete: true, isEdit: true, isFind: true } }
         );
-        console.log(tempres, "tempres");
+        // console.log(tempres, "tempres");
+       thisUserInfo = await UserInfo.findOne({ mobile: username }); // 如果是admin，那么重新查找，更新信息
+
       }
       console.log(thisUserInfo, "验证通过,thisUserInfo");
       /* 

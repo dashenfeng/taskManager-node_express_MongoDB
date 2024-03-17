@@ -54,6 +54,7 @@ const GeekLayout = () => {
   const dispatch = useDispatch();
   const onConfirm = () => {
     // console.log("确认退出");
+    document.cookie = 'loggedIn=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     dispatch(clearUserInfo());
     navigate("/login");
   };
