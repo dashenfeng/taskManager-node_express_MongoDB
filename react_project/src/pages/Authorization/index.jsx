@@ -1,27 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Card,
   Breadcrumb,
   Form,
   Button,
-  DatePicker,
   Select,
   Table,
   Space,
-  Popconfirm,
   Tag,
   Modal,
   Radio,
   Input,
 } from "antd";
 // 引入汉化包 时间选择器显示中文
-import locale from "antd/es/date-picker/locale/zh_CN";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useChannel } from "../../hooks/useChannel";
+import { EditOutlined } from "@ant-design/icons";
 import {
-  deleteTask,
-  deleteUser,
-  findInfo,
   findUserInfo,
   updateUserAuth,
 } from "../../apis/task";
@@ -29,10 +22,6 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 const Task = () => {
-  const navigate = useNavigate();
-  const { channelList } = useChannel();
-  const { RangePicker } = DatePicker;
-  const { Option } = Select;
   const [thisUserId, setThisUserId] = useState("");
   // 筛选功能
   // 1. 准备参数
@@ -45,8 +34,6 @@ const Task = () => {
   });
 
   const [list, setList] = useState([]); // 角色列表(所有人的)
-  // const [userInfo, setUserInfo] = useState({});
-  // const [userIsAdmin, setIsAdmin] = useState(false);
   const [thisUserInfo, setThisUserInfo] = useState({});
 
   // 查找用户信息(所有的)
@@ -172,7 +159,7 @@ const Task = () => {
       isEdit: tempAuthority.isEdit,
       isFind: tempAuthority.isFind,
     });
-    // console.log(result, "result");
+    console.log(result, "updateUserAuth_result");
     // console.log(list, "所有角色列表");
 
     fetchData(reqData);
